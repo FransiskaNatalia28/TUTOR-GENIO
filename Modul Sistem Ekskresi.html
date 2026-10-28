@@ -1,0 +1,388 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Modul Sistem Ekskresi</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* Layout: tab navigasi sticky di atas, satu kolom bacaan 70ch, kartu interaktif di dalam tiap tab */
+:root{
+  --bg:#f3f5f7; --surface:#ffffff; --fg:#1d2630; --muted:#5a6775; --line:#d9e0e6;
+  --accent:#a8323e; --accent-soft:#f6e3e5; --amber:#b9830f; --amber-soft:#fbf0d3;
+  --ok:#1f7a4d; --ok-soft:#dff2e7; --bad:#b3261e; --bad-soft:#fbe4e2;
+  --display:'Bricolage Grotesque','Trebuchet MS',sans-serif; --body:'Source Sans 3','Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#12181e; --surface:#1b232b; --fg:#e6ebf0; --muted:#9aa8b6; --line:#2c3844;
+  --accent:#e0707b; --accent-soft:#3a2226; --amber:#e3b04b; --amber-soft:#3a2f14;
+  --ok:#5fc78f; --ok-soft:#173326; --bad:#f0857d; --bad-soft:#3b1f1d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12181e; --surface:#1b232b; --fg:#e6ebf0; --muted:#9aa8b6; --line:#2c3844;
+  --accent:#e0707b; --accent-soft:#3a2226; --amber:#e3b04b; --amber-soft:#3a2f14;
+  --ok:#5fc78f; --ok-soft:#173326; --bad:#f0857d; --bad-soft:#3b1f1d; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-block:0 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:860px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(1.9rem,5vw,2.8rem);font-weight:700}
+h2{font-size:1.6rem;margin-top:8px}
+h3{font-size:1.2rem;margin-top:28px;margin-bottom:6px}
+p{margin:10px 0}
+header.top{padding-block:32px 18px}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.sub{color:var(--muted);max-width:60ch}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:6px;overflow-x:auto;padding-block:10px;border-bottom:1px solid var(--line)}
+nav.tabs button{flex:0 0 auto;font:600 .95rem var(--body);padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+nav.tabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+button:focus-visible,summary:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+section.panel{padding-block:22px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-block:14px}
+.callout{background:var(--amber-soft);border-left:4px solid var(--amber);padding:12px 16px;border-radius:6px;margin-block:14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.grid>*{min-width:0}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--accent-soft)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+ul{padding-left:22px;margin:8px 0}li{margin:4px 0}
+.imgref{border:1px dashed var(--line);border-radius:8px;padding:12px 14px;margin-block:14px;font-size:.92rem;color:var(--muted)}
+.imgref strong{color:var(--fg)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-block:12px}
+.flow span.n{background:var(--accent-soft);border:1px solid var(--accent);border-radius:8px;padding:6px 10px;font-weight:600}
+.flow span.a{color:var(--muted)}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin-block:10px}
+.steps button,.btn{font:600 .95rem var(--body);padding:9px 14px;border-radius:8px;border:1px solid var(--accent);background:var(--surface);color:var(--accent);cursor:pointer}
+.steps button[aria-pressed="true"],.btn.primary{background:var(--accent);color:#fff}
+.vol{font-family:var(--display);font-size:1.5rem;font-variant-numeric:tabular-nums}
+.bar{height:14px;border-radius:7px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--amber);transition:width .4s}
+.flip{width:100%;text-align:left;font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;min-height:110px}
+.flip b{display:block;font-family:var(--display);color:var(--accent);margin-bottom:4px}
+.flip.open{background:var(--amber-soft);border-color:var(--amber)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 16px;margin-block:8px}
+summary{cursor:pointer;font-weight:600}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-block:14px}
+.q .tag{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;margin-block:6px;cursor:pointer}
+.opt input{margin-top:5px}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.fb{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:.96rem}
+.fb.ok{background:var(--ok-soft)}.fb.no{background:var(--bad-soft)}
+.bsrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)}
+.bsrow label{margin-right:10px;cursor:pointer;white-space:nowrap}
+textarea{width:100%;min-height:90px;font:inherit;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.score{position:sticky;bottom:calc(8px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);border-radius:999px;padding:8px 18px;width:fit-content;margin:20px auto 0;font-weight:600;font-variant-numeric:tabular-nums}
+.key{background:var(--ok-soft);border-radius:8px;padding:10px 14px;margin-top:10px}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">IPA SMP · Kelas 8 · Sistem Organ Manusia</div>
+  <h1>Sistem Ekskresi pada Manusia</h1>
+  <p class="sub">Modul belajar mandiri: materi, kartu istilah, simulasi tahap pembentukan urine, soal cerita penalaran, dan latihan bergaya TKA dengan umpan balik langsung.</p>
+</header>
+
+<nav class="tabs" role="tablist" id="tabs">
+  <button role="tab" data-tab="mulai" aria-selected="true">Mulai</button>
+  <button role="tab" data-tab="ginjal" aria-selected="false">Ginjal</button>
+  <button role="tab" data-tab="kulit" aria-selected="false">Kulit</button>
+  <button role="tab" data-tab="paru" aria-selected="false">Paru-paru</button>
+  <button role="tab" data-tab="hati" aria-selected="false">Hati</button>
+  <button role="tab" data-tab="gangguan" aria-selected="false">Gangguan</button>
+  <button role="tab" data-tab="tka" aria-selected="false">Soal TKA</button>
+  <button role="tab" data-tab="cerita" aria-selected="false">Soal Cerita</button>
+</nav>
+
+<!-- MULAI -->
+<section class="panel" id="p-mulai">
+  <h2>Mengapa tubuh perlu mengeluarkan zat sisa?</h2>
+  <p>Setiap sel tubuh melakukan metabolisme untuk menghasilkan energi dan membangun bahan baru. Proses ini menghasilkan zat sisa seperti karbon dioksida, urea, dan uap air. Jika zat sisa menumpuk, keseimbangan tubuh terganggu dan sel dapat rusak.</p>
+  <p><b>Ekskresi</b> adalah pengeluaran zat sisa metabolisme yang tidak berguna lagi bagi tubuh. Ekskresi berbeda dengan <b>defekasi</b>, yaitu pembuangan sisa makanan yang tidak dicerna (feses) dan tidak pernah menjadi bagian dari metabolisme sel. Ekskresi juga berbeda dengan <b>sekresi</b>, yaitu pengeluaran zat yang masih dipakai tubuh, misalnya enzim dan hormon.</p>
+  <h3>Tujuan pembelajaran</h3>
+  <ul>
+    <li>Menyebutkan organ ekskresi beserta zat yang dikeluarkannya.</li>
+    <li>Menjelaskan struktur ginjal dan tiga tahap pembentukan urine.</li>
+    <li>Menghubungkan gangguan ekskresi dengan penyebab dan cara pencegahannya.</li>
+    <li>Menalar kasus sehari-hari dan menjawab soal bergaya TKA.</li>
+  </ul>
+  <h3>Peta organ ekskresi</h3>
+  <div class="tbl"><table>
+    <tr><th>Organ</th><th>Zat yang dikeluarkan</th><th>Bentuk hasil</th></tr>
+    <tr><td>Ginjal</td><td>Urea, amonia, garam berlebih, air berlebih, pigmen urobilin</td><td>Urine</td></tr>
+    <tr><td>Kulit</td><td>Air, garam mineral, sedikit urea</td><td>Keringat</td></tr>
+    <tr><td>Paru-paru</td><td>Karbon dioksida dan uap air</td><td>Udara ekspirasi</td></tr>
+    <tr><td>Hati</td><td>Bilirubin (hasil pemecahan sel darah merah)</td><td>Cairan empedu</td></tr>
+  </table></div>
+  <h3>Kartu istilah (ketuk untuk membalik)</h3>
+  <div class="grid" id="flips"></div>
+  <div class="imgref"><strong>Gambar rujukan.</strong> Halaman ini tidak dapat memuat gambar dari situs lain, sehingga gambar hasil pencarian web ditampilkan pada percakapan di atas, tepat sebelum modul ini. Sumber yang ditemukan: "Sistem Ekskresi pada Manusia" (Fadillah Distrik), "Ginjal: Sistem Ekskresi pada Manusia, Biologi Kelas 8", dan "Bagian nomor 5 adalah ...". Gunakan gambar tersebut untuk menandai bagian-bagian organ sambil membaca tab Ginjal.</div>
+</section>
+
+<!-- GINJAL -->
+<section class="panel" id="p-ginjal" hidden>
+  <h2>Ginjal</h2>
+  <p>Manusia memiliki sepasang ginjal berbentuk seperti kacang merah, terletak di rongga perut bagian belakang kiri dan kanan tulang belakang. Panjang ginjal orang dewasa sekitar 10 sampai 12 cm. Ginjal menyaring darah, mengatur kadar air dan garam, serta membentuk urine.</p>
+  <h3>Struktur ginjal</h3>
+  <ul>
+    <li><b>Korteks</b> (kulit ginjal): bagian luar, tempat badan Malpighi berada.</li>
+    <li><b>Medula</b> (sumsum ginjal): bagian tengah berbentuk piramida, tempat tubulus lurus dan lengkung Henle.</li>
+    <li><b>Pelvis</b> (rongga ginjal): ruang yang menampung urine sebelum masuk ke ureter.</li>
+  </ul>
+  <h3>Nefron, unit kerja ginjal</h3>
+  <p>Setiap ginjal mengandung sekitar satu juta nefron. Satu nefron terdiri atas <b>badan Malpighi</b> (glomerulus ditambah kapsul Bowman), <b>tubulus kontortus proksimal</b>, <b>lengkung Henle</b>, dan <b>tubulus kontortus distal</b>. Beberapa tubulus distal bermuara ke <b>tubulus pengumpul</b>.</p>
+  <div class="imgref"><strong>Gambar rujukan nefron.</strong> Lihat hasil pencarian "Struktur Ginjal dan Nefron Ginjal" (idschool) pada percakapan di atas untuk melihat letak glomerulus, kapsul Bowman, dan tubulus.</div>
+
+  <h3>Simulasi tiga tahap pembentukan urine</h3>
+  <p>Pilih tahap untuk melihat apa yang terjadi. Angka volume memakai perkiraan per hari pada orang dewasa sehat.</p>
+  <div class="steps" id="stepbtns">
+    <button data-s="0" aria-pressed="true">1. Filtrasi</button>
+    <button data-s="1" aria-pressed="false">2. Reabsorpsi</button>
+    <button data-s="2" aria-pressed="false">3. Augmentasi</button>
+  </div>
+  <div class="card" id="stepcard"></div>
+
+  <h3>Perbandingan komposisi</h3>
+  <div class="tbl"><table>
+    <tr><th>Zat</th><th class="num">Plasma darah (%)</th><th class="num">Urine primer (%)</th><th class="num">Urine sesungguhnya (%)</th></tr>
+    <tr><td>Protein</td><td class="num">8,0</td><td class="num">0</td><td class="num">0</td></tr>
+    <tr><td>Glukosa</td><td class="num">0,10</td><td class="num">0,10</td><td class="num">0</td></tr>
+    <tr><td>Urea</td><td class="num">0,03</td><td class="num">0,03</td><td class="num">2,0</td></tr>
+  </table></div>
+  <p>Data ini merupakan nilai pendekatan yang lazim dipakai pada buku teks. Protein tidak ada pada urine primer karena molekulnya terlalu besar untuk lolos melewati dinding glomerulus. Urea menjadi pekat pada urine karena air direabsorpsi sedangkan urea sebagian besar tidak.</p>
+
+  <h3>Jalur urine keluar tubuh</h3>
+  <div class="flow"><span class="n">Ginjal</span><span class="a">→</span><span class="n">Ureter</span><span class="a">→</span><span class="n">Kandung kemih</span><span class="a">→</span><span class="n">Uretra</span><span class="a">→</span><span class="n">Luar tubuh</span></div>
+  <p>Ureter adalah saluran panjang yang mengalirkan urine dari pelvis ginjal ke kandung kemih dengan gerak peristaltik. Kandung kemih menampung urine sampai sekitar 300 sampai 400 mL sebelum timbul rasa ingin buang air kecil. Uretra membawa urine keluar, dan otot sfingter mengendalikan pembukaannya.</p>
+
+  <h3>Pengaturan oleh hormon ADH</h3>
+  <p>Hormon antidiuretik (ADH) dihasilkan hipotalamus dan dilepaskan oleh kelenjar hipofisis. ADH meningkatkan reabsorpsi air di tubulus distal dan tubulus pengumpul. Saat tubuh kekurangan air, ADH meningkat sehingga urine sedikit dan pekat. Saat tubuh kelebihan air, ADH menurun sehingga urine banyak dan encer.</p>
+  <div class="callout"><b>Warna urine.</b> Warna kuning berasal dari pigmen urobilin, turunan bilirubin. Urine yang semakin kuning tua menunjukkan konsentrasi yang semakin pekat, yang sering terjadi saat tubuh kurang minum.</div>
+</section>
+
+<!-- KULIT -->
+<section class="panel" id="p-kulit" hidden>
+  <h2>Kulit</h2>
+  <p>Kulit terdiri atas lapisan epidermis, dermis, dan jaringan lemak bawah kulit. Di lapisan dermis terdapat kelenjar keringat, kelenjar minyak, akar rambut, ujung saraf, dan pembuluh darah. Kelenjar keringat mengambil air, garam, dan sedikit urea dari pembuluh darah di sekitarnya.</p>
+  <h3>Fungsi ekskresi dan termoregulasi</h3>
+  <p>Keringat keluar melalui pori-pori di permukaan kulit. Penguapan keringat menyerap panas sehingga suhu tubuh turun. Saat suhu lingkungan tinggi atau saat berolahraga, pembuluh darah di kulit melebar dan produksi keringat meningkat.</p>
+  <p>Pada udara dingin, pembuluh darah kulit menyempit untuk mengurangi pelepasan panas, dan keringat yang keluar lebih sedikit. Karena itu volume urine biasanya meningkat saat cuaca dingin, sedangkan saat cuaca panas volume urine cenderung berkurang.</p>
+  <h3>Perbedaan kelenjar</h3>
+  <div class="tbl"><table>
+    <tr><th>Kelenjar</th><th>Hasil</th><th>Fungsi</th></tr>
+    <tr><td>Kelenjar keringat</td><td>Keringat</td><td>Ekskresi dan menurunkan suhu tubuh</td></tr>
+    <tr><td>Kelenjar minyak (sebasea)</td><td>Sebum</td><td>Melumasi kulit dan rambut; ini sekresi, bukan ekskresi</td></tr>
+  </table></div>
+  <div class="imgref"><strong>Gambar rujukan.</strong> Lihat hasil pencarian "Fungsi dan Struktur Kelenjar Keringat" dan "Mengenal Struktur Kulit Manusia dan Fungsinya" pada percakapan di atas untuk melihat posisi kelenjar keringat di dermis.</div>
+</section>
+
+<!-- PARU -->
+<section class="panel" id="p-paru" hidden>
+  <h2>Paru-paru</h2>
+  <p>Paru-paru mengeluarkan karbon dioksida (CO₂) dan uap air hasil respirasi sel. Pertukaran gas terjadi di alveolus, yaitu kantong udara kecil berdinding sangat tipis yang dikelilingi kapiler darah. Oksigen berdifusi dari alveolus ke darah, sedangkan CO₂ berdifusi dari darah ke alveolus.</p>
+  <p>Difusi berlangsung dari tempat berkonsentrasi tinggi ke tempat berkonsentrasi rendah. Karena itu CO₂ yang tinggi di darah berpindah ke alveolus, lalu dikeluarkan saat ekspirasi. Uap air pada embusan napas dapat terlihat sebagai embun ketika napas dihembuskan ke kaca.</p>
+  <div class="callout"><b>Uji sederhana.</b> Hembuskan napas ke air kapur. Air kapur berubah keruh karena CO₂ bereaksi dengan kalsium hidroksida dan membentuk endapan kalsium karbonat.</div>
+  <div class="imgref"><strong>Gambar rujukan.</strong> Lihat hasil pencarian "Mekanisme pertukaran oksigen dan karbon dioksida dari alveolus" pada percakapan di atas.</div>
+</section>
+
+<!-- HATI -->
+<section class="panel" id="p-hati" hidden>
+  <h2>Hati</h2>
+  <p>Hati adalah kelenjar terbesar dalam tubuh dan terletak di rongga perut bagian kanan atas, di bawah diafragma. Hati berperan dalam metabolisme, penyimpanan, dan penawaran racun. Dalam konteks ekskresi, hati membentuk empedu yang mengandung bilirubin.</p>
+  <h3>Fungsi hati yang berkaitan dengan ekskresi</h3>
+  <ul>
+    <li><b>Pembentukan empedu:</b> sel darah merah tua dipecah di hati dan limpa, hemoglobinnya menjadi bilirubin, lalu bilirubin masuk ke empedu.</li>
+    <li><b>Deaminasi asam amino:</b> gugus amina dilepas dan diubah menjadi amonia, lalu amonia diubah menjadi urea yang lebih aman dan dibawa darah ke ginjal.</li>
+    <li><b>Detoksifikasi:</b> mengubah racun dan obat menjadi zat yang lebih mudah dikeluarkan.</li>
+  </ul>
+  <h3>Nasib bilirubin</h3>
+  <div class="flow"><span class="n">Sel darah merah tua</span><span class="a">→</span><span class="n">Bilirubin</span><span class="a">→</span><span class="n">Empedu</span><span class="a">→</span><span class="n">Usus halus</span><span class="a">→</span><span class="n">Urobilin / sterkobilin</span></div>
+  <p>Di usus, bilirubin diubah menjadi pigmen yang memberi warna pada feses (sterkobilin) dan urine (urobilin). Jika saluran empedu tersumbat atau hati rusak, bilirubin menumpuk di darah sehingga kulit dan bagian putih mata tampak kuning. Kondisi ini disebut ikterus atau jaundice, dan feses dapat tampak pucat.</p>
+  <div class="imgref"><strong>Gambar rujukan.</strong> Lihat hasil pencarian "Struktur dan Fungsi Hati Manusia" dan "Anatomi Hati Manusia dan Fungsinya" pada percakapan di atas.</div>
+</section>
+
+<!-- GANGGUAN -->
+<section class="panel" id="p-gangguan" hidden>
+  <h2>Gangguan pada sistem ekskresi</h2>
+  <p>Gangguan ekskresi dapat dikenali dari perubahan pada urine, kulit, atau napas. Ketuk setiap judul untuk membaca penyebab, gejala, dan pencegahannya.</p>
+  <details><summary>Nefritis</summary><p>Peradangan pada nefron, terutama glomerulus, akibat infeksi bakteri atau reaksi kekebalan. Penyaringan terganggu sehingga protein (albuminuria) dan sel darah merah (hematuria) dapat lolos ke dalam urine.</p></details>
+  <details><summary>Albuminuria dan hematuria</summary><p>Albuminuria berarti ada albumin (protein) dalam urine. Hematuria berarti ada darah dalam urine. Keduanya menandakan bahwa filter glomerulus rusak atau saluran kemih terluka.</p></details>
+  <details><summary>Glikosuria dan diabetes melitus</summary><p>Glikosuria berarti ada glukosa dalam urine. Pada diabetes melitus kadar glukosa darah terlalu tinggi sehingga melebihi kemampuan tubulus proksimal untuk mereabsorpsi seluruhnya, dan sisanya keluar bersama urine.</p></details>
+  <details><summary>Diabetes insipidus</summary><p>Terjadi karena kekurangan hormon ADH. Reabsorpsi air berkurang sehingga volume urine sangat banyak dan encer, dan penderita sering merasa sangat haus.</p></details>
+  <details><summary>Batu ginjal</summary><p>Endapan garam mineral, misalnya kalsium oksalat, yang mengeras di ginjal atau saluran kemih. Gejalanya berupa nyeri hebat di pinggang dan kadang urine bercampur darah. Minum air putih yang cukup membantu mencegahnya.</p></details>
+  <details><summary>Gagal ginjal dan hemodialisis</summary><p>Ginjal kehilangan kemampuan menyaring darah, sehingga urea dan air menumpuk dan tubuh membengkak. Hemodialisis (cuci darah) memakai mesin yang menyaring darah di luar tubuh. Pada kondisi berat, cangkok ginjal dapat dilakukan.</p></details>
+  <details><summary>Penyakit kulit akibat gangguan ekskresi</summary><p>Biang keringat terjadi saat kelenjar keringat tersumbat. Jerawat berkaitan dengan kelenjar minyak yang tersumbat dan meradang. Kulit tetap perlu dijaga bersih dan kering.</p></details>
+  <details><summary>Gangguan hati: hepatitis dan sirosis</summary><p>Hepatitis adalah peradangan hati, umumnya akibat virus. Sirosis adalah pengerasan hati akibat jaringan parut, misalnya karena konsumsi alkohol berlebihan jangka panjang.</p></details>
+  <h3>Menjaga kesehatan sistem ekskresi</h3>
+  <ul>
+    <li>Minum air putih secukupnya sepanjang hari, jangan menahan buang air kecil terlalu lama.</li>
+    <li>Kurangi makanan sangat asin dan hindari obat atau minuman beralkohol berlebihan.</li>
+    <li>Mandi teratur, memakai pakaian yang menyerap keringat, dan berolahraga.</li>
+    <li>Periksa kesehatan secara berkala bila ada riwayat tekanan darah tinggi atau diabetes.</li>
+  </ul>
+</section>
+
+<!-- TKA -->
+<section class="panel" id="p-tka" hidden>
+  <h2>Latihan soal bergaya TKA</h2>
+  <p>Kerjakan setiap soal, lalu tekan Periksa untuk melihat pembahasan. Ada tiga bentuk soal: pilihan ganda, pilihan ganda kompleks (lebih dari satu jawaban benar), dan pernyataan benar atau salah.</p>
+  <div id="quiz"></div>
+  <div class="score" id="score">Skor: 0 / 0</div>
+</section>
+
+<!-- CERITA -->
+<section class="panel" id="p-cerita" hidden>
+  <h2>Soal cerita penalaran</h2>
+  <p>Setiap kasus memuat beberapa pertanyaan yang menuntut penjelasan bertahap. Tulis jawabanmu terlebih dahulu pada kotak yang tersedia, lalu buka kunci dan rubrik untuk mencocokkan jawabanmu.</p>
+  <div id="stories"></div>
+</section>
+</div>
+
+<script>
+// ---------- Tab ----------
+var tabs=document.getElementById('tabs');
+function show(id){
+  document.querySelectorAll('section.panel').forEach(function(s){s.hidden=(s.id!=='p-'+id)});
+  tabs.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.tab===id?'true':'false')});
+  window.scrollTo({top:0});
+}
+tabs.addEventListener('click',function(e){var b=e.target.closest('button');if(b)show(b.dataset.tab)});
+
+// ---------- Kartu istilah ----------
+var terms=[
+ ['Ekskresi','Pengeluaran zat sisa metabolisme yang tidak berguna lagi bagi tubuh.'],
+ ['Defekasi','Pembuangan feses, yaitu sisa makanan yang tidak dicerna.'],
+ ['Nefron','Unit struktural dan fungsional ginjal; satu ginjal memuat sekitar satu juta nefron.'],
+ ['Badan Malpighi','Glomerulus bersama kapsul Bowman, tempat filtrasi darah.'],
+ ['Urine primer','Filtrat glomerulus: mengandung air, glukosa, asam amino, urea, garam; tanpa protein dan sel darah.'],
+ ['Urine sekunder','Urine setelah reabsorpsi di tubulus proksimal dan lengkung Henle; glukosa sudah tidak ada.'],
+ ['Augmentasi','Penambahan zat sisa ke tubulus kontortus distal sehingga terbentuk urine sesungguhnya.'],
+ ['ADH','Hormon yang meningkatkan reabsorpsi air; saat kurang minum kadarnya naik.'],
+ ['Bilirubin','Pigmen kuning hasil pemecahan hemoglobin, dikeluarkan hati bersama empedu.'],
+ ['Deaminasi','Pelepasan gugus amina dari asam amino di hati; hasilnya akhirnya menjadi urea.']
+];
+var fl=document.getElementById('flips');
+terms.forEach(function(t){
+  var b=document.createElement('button');b.className='flip';b.type='button';
+  b.innerHTML='<b>'+t[0]+'</b><span>Ketuk untuk melihat arti</span>';
+  var open=false;
+  b.onclick=function(){open=!open;b.classList.toggle('open',open);b.querySelector('span').textContent=open?t[1]:'Ketuk untuk melihat arti'};
+  fl.appendChild(b);
+});
+
+// ---------- Simulasi tahap ----------
+var stages=[
+ {t:'Filtrasi (penyaringan)',w:'Badan Malpighi (korteks)',v:'± 180 L urine primer / hari',p:100,
+  d:'Darah bertekanan tinggi dari arteriol aferen masuk ke glomerulus. Air, glukosa, asam amino, urea, dan garam terdorong masuk ke kapsul Bowman. Sel darah dan protein tetap berada di darah karena ukurannya besar.'},
+ {t:'Reabsorpsi (penyerapan kembali)',w:'Tubulus kontortus proksimal dan lengkung Henle',v:'± 1,5 L urine sekunder / hari',p:12,
+  d:'Zat yang masih berguna diserap kembali ke kapiler darah: seluruh glukosa dan asam amino, sebagian besar air, dan ion yang dibutuhkan. Di lengkung Henle dan tubulus distal, ADH mengatur jumlah air yang diserap.'},
+ {t:'Augmentasi (penambahan)',w:'Tubulus kontortus distal',v:'± 1,5 L urine sesungguhnya / hari',p:10,
+  d:'Zat sisa yang masih ada di darah, misalnya ion H⁺, K⁺, amonia, dan sisa obat, ditambahkan ke tubulus. Cairan yang dihasilkan disebut urine sesungguhnya lalu mengalir ke tubulus pengumpul, pelvis, dan ureter.'}
+];
+var sc=document.getElementById('stepcard');
+function renderStep(i){
+  var s=stages[i];
+  sc.innerHTML='<h3 style="margin-top:0">'+s.t+'</h3><p><b>Tempat:</b> '+s.w+'</p><p>'+s.d+'</p><div class="vol">'+s.v+'</div><div class="bar"><i style="width:'+s.p+'%"></i></div>';
+  document.querySelectorAll('#stepbtns button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.s==i?'true':'false')});
+}
+document.getElementById('stepbtns').addEventListener('click',function(e){var b=e.target.closest('button');if(b)renderStep(+b.dataset.s)});
+renderStep(0);
+
+// ---------- Soal TKA ----------
+var Q=[
+ {t:'pg',q:'Zat sisa utama hasil pemecahan protein yang dikeluarkan melalui urine adalah ....',o:['Urea','Glukosa','Albumin','Hemoglobin'],a:0,e:'Asam amino dideaminasi di hati menjadi amonia, lalu diubah menjadi urea dan dikeluarkan ginjal. Glukosa dan albumin masih dipakai tubuh, sedangkan hemoglobin berada dalam sel darah merah.'},
+ {t:'pg',q:'Urine primer berbeda dari plasma darah karena urine primer tidak mengandung ....',o:['Air dan garam','Glukosa dan asam amino','Protein dan sel darah','Urea dan ion'],a:2,e:'Filtrasi di glomerulus meloloskan molekul kecil. Protein dan sel darah terlalu besar sehingga tertahan.'},
+ {t:'pg',q:'Urutan jalur urine dari tempat pembentukannya sampai keluar tubuh yang benar adalah ....',o:['Ginjal → kandung kemih → ureter → uretra','Ginjal → ureter → kandung kemih → uretra','Ginjal → uretra → kandung kemih → ureter','Ureter → ginjal → uretra → kandung kemih'],a:1,e:'Ureter menghubungkan ginjal ke kandung kemih, dan uretra membawa urine keluar dari kandung kemih.'},
+ {t:'pg',q:'Seorang pasien diabetes melitus ditemukan memiliki glukosa pada urinenya. Penyebab paling tepat adalah ....',o:['Glomerulus tidak dapat menyaring glukosa','Kadar glukosa melebihi kemampuan reabsorpsi di tubulus proksimal','Kandung kemih menghasilkan glukosa','Augmentasi menambah glukosa dari hati'],a:1,e:'Glukosa normalnya disaring lalu direabsorpsi seluruhnya. Pada kadar darah yang sangat tinggi, kapasitas reabsorpsi terlampaui sehingga sisa glukosa keluar bersama urine.'},
+ {t:'pg',q:'Saat seseorang berlari di siang hari dan hanya minum sedikit, urine yang keluar sedikit dan berwarna kuning pekat. Penjelasan yang tepat adalah ....',o:['ADH menurun sehingga reabsorpsi air meningkat','ADH meningkat sehingga reabsorpsi air meningkat','ADH meningkat sehingga filtrasi berhenti','ADH menurun sehingga produksi keringat berhenti'],a:1,e:'Kehilangan air lewat keringat membuat tubuh menahan air. ADH meningkat, air lebih banyak diserap kembali, dan urine menjadi sedikit serta pekat.'},
+ {t:'pg',q:'Zat sisa yang dikeluarkan paru-paru adalah ....',o:['Karbon dioksida dan uap air','Oksigen dan nitrogen','Urea dan garam','Bilirubin dan amonia'],a:0,e:'Respirasi sel menghasilkan CO₂ dan H₂O yang dikeluarkan saat ekspirasi.'},
+ {t:'pg',q:'Penderita hepatitis sering memperlihatkan kulit dan mata berwarna kuning. Hal ini terjadi karena ....',o:['Urea menumpuk di kulit','Bilirubin tidak terbuang sempurna dan menumpuk di darah','Glukosa berubah menjadi pigmen kuning','Kelenjar minyak berhenti bekerja'],a:1,e:'Hati yang rusak tidak mampu mengolah dan membuang bilirubin dalam empedu sehingga bilirubin beredar di darah dan mewarnai jaringan.'},
+ {t:'pg',q:'Perhatikan data persentase zat berikut.',tbl:'<div class="tbl"><table><tr><th>Zat</th><th class="num">Plasma</th><th class="num">Urine primer</th><th class="num">Urine akhir</th></tr><tr><td>Protein</td><td class="num">8,0</td><td class="num">0</td><td class="num">0</td></tr><tr><td>Glukosa</td><td class="num">0,10</td><td class="num">0,10</td><td class="num">0</td></tr><tr><td>Urea</td><td class="num">0,03</td><td class="num">0,03</td><td class="num">2,0</td></tr></table></div>',
+  o:['Glukosa tidak disaring di glomerulus karena kadarnya di urine primer sama dengan plasma','Protein direabsorpsi di tubulus karena kadarnya di urine akhir nol','Glukosa disaring lalu direabsorpsi, dan urea menjadi pekat karena air diserap kembali','Urea ditambahkan seluruhnya pada tahap filtrasi'],a:2,e:'Glukosa ada di urine primer (lolos filtrasi) dan hilang di urine akhir (direabsorpsi). Protein tidak pernah lolos filtrasi. Kadar urea naik dari 0,03 ke 2,0 karena air diserap kembali sementara urea sebagian besar tertinggal.'},
+ {t:'mc',q:'Pilih semua pernyataan yang benar tentang kulit sebagai alat ekskresi.',o:['Keringat mengandung air, garam, dan sedikit urea','Kelenjar keringat terletak di lapisan epidermis','Penguapan keringat membantu menurunkan suhu tubuh','Kelenjar minyak mengeluarkan keringat'],a:[0,2],e:'Kelenjar keringat berada di dermis, bukan epidermis. Kelenjar minyak menghasilkan sebum, bukan keringat.'},
+ {t:'mc',q:'Pilih semua pasangan organ dan zat ekskresinya yang tepat.',o:['Paru-paru dengan karbon dioksida','Hati dengan bilirubin dalam empedu','Ginjal dengan urea','Kulit dengan karbon dioksida sebagai zat utama'],a:[0,1,2],e:'Kulit mengeluarkan terutama air dan garam. Karbon dioksida dikeluarkan terutama oleh paru-paru.'},
+ {t:'bs',q:'Tentukan benar atau salah untuk setiap pernyataan.',items:[
+   ['Penyaringan darah terjadi di glomerulus dan kapsul Bowman.',true],
+   ['Urine sekunder pada orang sehat masih mengandung glukosa.',false],
+   ['Augmentasi terjadi di tubulus kontortus distal.',true],
+   ['Defekasi termasuk contoh ekskresi.',false]],
+  e:'Urine sekunder pada orang sehat tidak mengandung glukosa karena seluruhnya direabsorpsi. Defekasi membuang sisa makanan yang tidak dicerna, bukan zat sisa metabolisme, sehingga bukan ekskresi.'}
+];
+var qz=document.getElementById('quiz'),done=0,right=0;
+function upScore(){document.getElementById('score').textContent='Skor: '+right+' / '+Q.length+' (dijawab '+done+')'}
+Q.forEach(function(q,i){
+  var d=document.createElement('div');d.className='q';
+  var tag=q.t==='pg'?'Pilihan ganda':q.t==='mc'?'Pilihan ganda kompleks':'Benar / Salah';
+  var h='<div class="tag">Soal '+(i+1)+' · '+tag+'</div><p><b>'+q.q+'</b></p>'+(q.tbl||'');
+  if(q.t==='bs'){
+    q.items.forEach(function(it,j){h+='<div class="bsrow"><span style="flex:1 1 260px">'+it[0]+'</span><span><label><input type="radio" name="q'+i+'_'+j+'" value="1"> Benar</label><label><input type="radio" name="q'+i+'_'+j+'" value="0"> Salah</label></span></div>'});
+  }else{
+    q.o.forEach(function(o,j){h+='<label class="opt"><input type="'+(q.t==='pg'?'radio':'checkbox')+'" name="q'+i+'" value="'+j+'"><span>'+o+'</span></label>'});
+  }
+  h+='<button class="btn primary" type="button" style="margin-top:8px">Periksa</button><div class="fb" hidden></div>';
+  d.innerHTML=h;qz.appendChild(d);
+  var btn=d.querySelector('button'),fb=d.querySelector('.fb'),checked=false;
+  btn.onclick=function(){
+    if(checked)return;var ok=false;
+    if(q.t==='pg'){
+      var s=d.querySelector('input:checked');if(!s){fb.hidden=false;fb.className='fb no';fb.textContent='Pilih satu jawaban terlebih dahulu.';return}
+      ok=(+s.value===q.a);
+    }else if(q.t==='mc'){
+      var v=[].map.call(d.querySelectorAll('input:checked'),function(x){return +x.value}).sort();
+      if(!v.length){fb.hidden=false;fb.className='fb no';fb.textContent='Pilih minimal satu jawaban terlebih dahulu.';return}
+      ok=(v.join()===q.a.join());
+    }else{
+      var all=true;ok=true;
+      q.items.forEach(function(it,j){var s=d.querySelector('input[name="q'+i+'_'+j+'"]:checked');if(!s){all=false}else if((s.value==='1')!==it[1]){ok=false}});
+      if(!all){fb.hidden=false;fb.className='fb no';fb.textContent='Jawab semua pernyataan terlebih dahulu.';return}
+    }
+    checked=true;done++;if(ok)right++;
+    if(q.t!=='bs'){d.querySelectorAll('.opt').forEach(function(l,j){var isA=q.t==='pg'?j===q.a:q.a.indexOf(j)>-1,on=l.querySelector('input').checked;if(isA)l.classList.add('right');else if(on)l.classList.add('wrong');l.querySelector('input').disabled=true})}
+    else d.querySelectorAll('input').forEach(function(x){x.disabled=true});
+    fb.hidden=false;fb.className='fb '+(ok?'ok':'no');fb.innerHTML='<b>'+(ok?'Benar.':'Belum tepat.')+'</b> '+q.e;
+    btn.hidden=true;upScore();
+  };
+});
+upScore();
+
+// ---------- Soal cerita ----------
+var S=[
+ {t:'Kasus 1. Pendakian Bayu',s:'Bayu mendaki gunung di bawah terik matahari selama enam jam dan hanya minum sebotol kecil air. Wajahnya berkeringat deras dan pakaiannya basah. Sore harinya ia buang air kecil dan melihat urinenya hanya sedikit serta berwarna kuning tua. Setelah malam hari ia minum banyak air hangat dan mengamati bahwa urine berikutnya jauh lebih banyak dan lebih jernih.',
+  qs:[
+   ['a. Jelaskan hubungan antara banyaknya keringat Bayu dan sedikitnya volume urine pada sore hari.','Keringat mengeluarkan air dan garam sehingga volume cairan tubuh menurun. Tubuh menjaga cairan dengan menaikkan hormon ADH sehingga reabsorpsi air di tubulus distal dan tubulus pengumpul meningkat. Air yang dibuang lewat urine menjadi sedikit.','Rubrik: (1) menyebut keringat membuang air [1], (2) menyebut ADH meningkat [1], (3) menyebut reabsorpsi air naik sehingga urine sedikit [1].'],
+   ['b. Mengapa urine Bayu berwarna kuning tua? Kaitkan dengan konsentrasi zat terlarut.','Jumlah pigmen urobilin dan zat sisa seperti urea relatif tetap, sedangkan air dalam urine sedikit. Zat terlarut menjadi lebih pekat sehingga warnanya kuning tua.','Rubrik: (1) menyebut urobilin atau zat terlarut [1], (2) menyebut air sedikit sehingga pekat [1].'],
+   ['c. Jelaskan perubahan yang terjadi pada ADH setelah Bayu minum banyak air, dan prediksikan dampaknya pada urine.','Cairan tubuh bertambah sehingga ADH menurun. Reabsorpsi air berkurang, lebih banyak air tetap di tubulus, dan urine menjadi banyak serta lebih encer.','Rubrik: (1) ADH menurun [1], (2) reabsorpsi air berkurang [1], (3) urine banyak dan encer [1].'],
+   ['d. Susun satu saran ilmiah untuk pendaki agar sistem ekskresinya tetap sehat, disertai alasannya.','Minum air secara teratur sebelum dan selama pendakian. Alasannya, asupan air menggantikan air yang hilang lewat keringat sehingga volume cairan tubuh, keseimbangan garam, dan kerja ginjal tetap terjaga.','Rubrik: saran yang relevan [1] dan alasan yang berkaitan dengan keseimbangan cairan atau kerja ginjal [1].']
+  ]},
+ {t:'Kasus 2. Hasil laboratorium Bu Sari',s:'Bu Sari (45 tahun) mengeluh kaki dan kelopak matanya bengkak sejak dua minggu. Dokter meminta pemeriksaan urine. Hasilnya menunjukkan adanya protein (albumin) dan sel darah merah pada urine, sedangkan kadar glukosa urine normal. Dokter mencurigai adanya peradangan pada glomerulus dan menyarankan pengurangan makanan asin serta kontrol rutin.',
+  qs:[
+   ['a. Mengapa temuan protein dan sel darah merah dalam urine menunjukkan kerusakan pada glomerulus dan bukan pada tubulus proksimal?','Protein dan sel darah merah berukuran besar dan normalnya tidak lolos filtrasi. Tubulus proksimal hanya mereabsorpsi zat yang sudah tersaring, sehingga kerusakan tubulus tidak menjelaskan lolosnya zat yang tidak seharusnya disaring. Karena itu, keberadaan keduanya dalam urine menunjukkan penyaring di glomerulus bocor.','Rubrik: (1) ukuran besar, normalnya tidak tersaring [1], (2) tubulus hanya bekerja pada filtrat [1], (3) kesimpulan glomerulus bocor [1].'],
+   ['b. Mengapa kadar glukosa urine Bu Sari yang normal (tidak ada) masih sesuai dengan fungsi tubulus yang baik?','Glukosa tersaring dan seluruhnya direabsorpsi di tubulus proksimal. Tidak adanya glukosa di urine menunjukkan reabsorpsi di tubulus masih berfungsi.','Rubrik: (1) glukosa disaring lalu direabsorpsi [1], (2) simpulan tubulus berfungsi [1].'],
+   ['c. Jelaskan secara bernalar mengapa kaki dan kelopak mata Bu Sari bisa bengkak.','Protein hilang melalui urine sehingga kadar protein darah menurun. Cairan yang biasanya tertahan di pembuluh darah oleh protein darah merembes ke jaringan, dan juga ginjal yang rusak kurang mampu membuang garam dan air. Akibatnya cairan menumpuk di jaringan dan tampak sebagai bengkak.','Rubrik: (1) protein hilang di urine [1], (2) cairan berpindah ke jaringan atau garam dan air tertahan [1].'],
+   ['d. Mengapa dokter menyarankan pengurangan makanan asin? Berikan alasan fisiologis.','Garam berlebih menahan air dalam tubuh dan menambah beban kerja ginjal yang sudah terganggu. Pengurangan garam membantu mengurangi penumpukan cairan.','Rubrik: (1) garam menahan air [1], (2) mengurangi beban ginjal [1].']
+  ]},
+ {t:'Kasus 3. Kuning pada Pak Joko',s:'Pak Joko (50 tahun) merasa lemas dan tidak nafsu makan. Teman-temannya melihat bagian putih matanya kuning. Urinenya berwarna cokelat pekat seperti teh, sedangkan fesesnya berwarna pucat seperti dempul. Dokter menjelaskan adanya gangguan pada hati atau saluran empedu.',
+  qs:[
+   ['a. Urutkan jalur pembentukan dan pembuangan bilirubin pada kondisi normal.','Sel darah merah tua dipecah, hemoglobin menjadi bilirubin, bilirubin diolah hati dan dikeluarkan bersama empedu ke usus halus, lalu diubah menjadi sterkobilin yang mewarnai feses dan urobilin yang mewarnai urine.','Rubrik: urutan lengkap dan benar [3]; urutan benar tetapi tidak lengkap [1-2].'],
+   ['b. Jelaskan mengapa mata Pak Joko kuning.','Hati atau saluran empedu terganggu sehingga bilirubin tidak terbuang ke empedu dan menumpuk di darah. Bilirubin yang tinggi mewarnai jaringan, misalnya bagian putih mata dan kulit, menjadi kuning.','Rubrik: (1) bilirubin menumpuk di darah [1], (2) mewarnai jaringan [1].'],
+   ['c. Mengapa feses Pak Joko pucat?','Bilirubin tidak sampai ke usus sehingga tidak terbentuk sterkobilin, pigmen yang memberi warna cokelat pada feses.','Rubrik: (1) bilirubin tidak masuk usus [1], (2) sterkobilin tidak terbentuk [1].'],
+   ['d. Mengapa urine Pak Joko berwarna cokelat pekat? Berikan penalaran dari data cerita.','Bilirubin yang tinggi di darah ikut disaring dan keluar melalui ginjal sehingga mewarnai urine menjadi cokelat pekat.','Rubrik: (1) bilirubin berlebih di darah dikeluarkan lewat ginjal [1], (2) warna urine berubah [1].'],
+   ['e. Selain bilirubin, sebutkan satu fungsi hati lain yang dapat terganggu dan akibatnya bagi ekskresi.','Fungsi deaminasi dan pembentukan urea. Jika terganggu, amonia yang beracun tidak diubah menjadi urea sehingga kadar amonia dalam darah naik dan merugikan tubuh, terutama otak.','Rubrik: fungsi yang benar [1] dan akibat yang masuk akal [1].']
+  ]}
+];
+var st=document.getElementById('stories');
+S.forEach(function(c,ci){
+  var d=document.createElement('div');d.className='card';
+  var h='<h3 style="margin-top:0">'+c.t+'</h3><p>'+c.s+'</p>';
+  c.qs.forEach(function(x,qi){
+    var id='s'+ci+'_'+qi;
+    h+='<p style="margin-top:16px"><b>'+x[0]+'</b></p><textarea id="ta'+id+'" placeholder="Tulis jawabanmu di sini"></textarea>'+
+       '<button class="btn" type="button" data-k="'+id+'" style="margin-top:6px">Lihat kunci dan rubrik</button><div class="key" id="k'+id+'" hidden><b>Kunci:</b> '+x[1]+'<br><span style="color:var(--muted)">'+x[2]+'</span></div>';
+  });
+  d.innerHTML=h;st.appendChild(d);
+});
+st.addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(!b)return;var k=document.getElementById('k'+b.dataset.k);k.hidden=!k.hidden;b.textContent=k.hidden?'Lihat kunci dan rubrik':'Sembunyikan kunci'});
+</script>
+
+</body></html>

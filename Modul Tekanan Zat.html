@@ -1,0 +1,521 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Modul Tekanan Zat</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+/* Layout: tab sticky di atas, satu kolom bacaan 860px, kalkulator interaktif di tiap tab materi */
+:root{
+  --bg:#f2f5f8; --surface:#ffffff; --fg:#17232e; --muted:#566676; --line:#d6dfe7;
+  --accent:#1b5f8f; --accent-soft:#deeaf4; --amber:#b9780f; --amber-soft:#fbefd2;
+  --ok:#1f7a4d; --ok-soft:#dff2e7; --bad:#b3261e; --bad-soft:#fbe4e2;
+  --display:'Bricolage Grotesque','Trebuchet MS',sans-serif; --body:'Source Sans 3','Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#10171e; --surface:#1a232c; --fg:#e5ebf1; --muted:#9aaab9; --line:#2b3845;
+  --accent:#6bb4e6; --accent-soft:#1b2f40; --amber:#e3b04b; --amber-soft:#3a2f14;
+  --ok:#5fc78f; --ok-soft:#173326; --bad:#f0857d; --bad-soft:#3b1f1d; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10171e; --surface:#1a232c; --fg:#e5ebf1; --muted:#9aaab9; --line:#2b3845;
+  --accent:#6bb4e6; --accent-soft:#1b2f40; --amber:#e3b04b; --amber-soft:#3a2f14;
+  --ok:#5fc78f; --ok-soft:#173326; --bad:#f0857d; --bad-soft:#3b1f1d; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.6;
+  padding-block:0 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:860px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);line-height:1.2;text-wrap:balance;margin:0}
+h1{font-size:clamp(1.9rem,5vw,2.8rem);font-weight:700}
+h2{font-size:1.6rem;margin-top:8px}
+h3{font-size:1.2rem;margin-top:28px;margin-bottom:6px}
+p{margin:10px 0}
+header.top{padding-block:32px 18px}
+.eyebrow{font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:600}
+.sub{color:var(--muted);max-width:60ch}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);display:flex;gap:6px;overflow-x:auto;padding-block:10px;border-bottom:1px solid var(--line)}
+nav.tabs button{flex:0 0 auto;font:600 .95rem var(--body);padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer}
+nav.tabs button[aria-selected="true"]{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) nav.tabs button[aria-selected="true"]{color:#08141d}}
+:root[data-theme="dark"] nav.tabs button[aria-selected="true"]{color:#08141d}
+button:focus-visible,summary:focus-visible,textarea:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+section.panel{padding-block:22px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-block:14px}
+.callout{background:var(--amber-soft);border-left:4px solid var(--amber);padding:12px 16px;border-radius:6px;margin-block:14px}
+.formula{font-family:var(--display);font-size:1.35rem;background:var(--accent-soft);border-radius:8px;padding:10px 16px;margin-block:12px;text-align:center}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.grid>*{min-width:0}
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{border:1px solid var(--line);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--accent-soft)}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+ul{padding-left:22px;margin:8px 0}li{margin:4px 0}
+.imgref{border:1px dashed var(--line);border-radius:8px;padding:12px 14px;margin-block:14px;font-size:.92rem;color:var(--muted)}
+.imgref strong{color:var(--fg)}
+.ctl{display:grid;grid-template-columns:minmax(0,150px) minmax(0,1fr) minmax(0,90px);gap:10px;align-items:center;margin-block:8px}
+.ctl output{font-variant-numeric:tabular-nums;text-align:right;font-weight:600}
+.ctl input[type=range]{width:100%;accent-color:var(--accent)}
+select{font:inherit;padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg);max-width:100%}
+.result{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin-top:12px}
+.result div{background:var(--accent-soft);border-radius:8px;padding:10px 12px}
+.result small{display:block;color:var(--muted);font-size:.8rem}
+.result .v{font-family:var(--display);font-size:1.25rem;font-variant-numeric:tabular-nums;overflow-wrap:anywhere}
+.bar{height:14px;border-radius:7px;background:var(--line);overflow:hidden;margin-top:10px}
+.bar i{display:block;height:100%;background:var(--amber);transition:width .3s}
+.steps{display:flex;gap:8px;flex-wrap:wrap;margin-block:10px}
+.btn,.steps button{font:600 .95rem var(--body);padding:9px 14px;border-radius:8px;border:1px solid var(--accent);background:var(--surface);color:var(--accent);cursor:pointer}
+.btn.primary{background:var(--accent);color:#fff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn.primary{color:#08141d}}
+:root[data-theme="dark"] .btn.primary{color:#08141d}
+.flip{width:100%;text-align:left;font:inherit;color:var(--fg);background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;cursor:pointer;min-height:110px}
+.flip b{display:block;font-family:var(--display);color:var(--accent);margin-bottom:4px}
+.flip.open{background:var(--amber-soft);border-color:var(--amber)}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 16px;margin-block:8px}
+summary{cursor:pointer;font-weight:600}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px;margin-block:14px}
+.q .tag{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border:1px solid var(--line);border-radius:8px;margin-block:6px;cursor:pointer}
+.opt input{margin-top:5px}
+.opt.right{background:var(--ok-soft);border-color:var(--ok)}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.fb{margin-top:10px;padding:10px 12px;border-radius:8px;font-size:.96rem}
+.fb.ok{background:var(--ok-soft)}.fb.no{background:var(--bad-soft)}
+.bsrow{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line)}
+.bsrow label{margin-right:10px;cursor:pointer;white-space:nowrap}
+textarea{width:100%;min-height:90px;font:inherit;padding:10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--fg)}
+.score{position:sticky;bottom:calc(8px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);border-radius:999px;padding:8px 18px;width:fit-content;margin:20px auto 0;font-weight:600;font-variant-numeric:tabular-nums}
+.key{background:var(--ok-soft);border-radius:8px;padding:10px 14px;margin-top:10px}
+@media (max-width:520px){.ctl{grid-template-columns:1fr auto}.ctl input[type=range]{grid-column:1/-1;order:3}}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+</style>
+
+<div class="wrap">
+<header class="top">
+  <div class="eyebrow">IPA SMP · Kelas 8 · Fisika</div>
+  <h1>Tekanan pada Zat Padat, Cair, dan Gas</h1>
+  <p class="sub">Modul belajar mandiri: materi, kalkulator interaktif untuk tiap konsep, soal cerita penalaran, dan latihan bergaya TKA dengan umpan balik langsung. Nilai gravitasi yang dipakai adalah g = 10 m/s².</p>
+</header>
+
+<nav class="tabs" role="tablist" id="tabs">
+  <button role="tab" data-tab="mulai" aria-selected="true">Mulai</button>
+  <button role="tab" data-tab="padat" aria-selected="false">Zat Padat</button>
+  <button role="tab" data-tab="cair" aria-selected="false">Zat Cair</button>
+  <button role="tab" data-tab="pascal" aria-selected="false">Hukum Pascal</button>
+  <button role="tab" data-tab="arch" aria-selected="false">Archimedes</button>
+  <button role="tab" data-tab="gas" aria-selected="false">Gas</button>
+  <button role="tab" data-tab="tka" aria-selected="false">Soal TKA</button>
+  <button role="tab" data-tab="cerita" aria-selected="false">Soal Cerita</button>
+</nav>
+
+<!-- MULAI -->
+<section class="panel" id="p-mulai">
+  <h2>Mengapa paku mudah menembus kayu, tetapi telapak tangan tidak?</h2>
+  <p>Paku dan telapak tangan menerima gaya yang kurang lebih sama ketika ditekan, tetapi ujung paku memiliki luas bidang yang sangat kecil. Gaya yang sama pada luas yang kecil menghasilkan tekanan yang jauh lebih besar. Gagasan inilah yang dijelaskan oleh konsep tekanan.</p>
+  <p><b>Tekanan</b> adalah besar gaya yang bekerja tegak lurus pada tiap satuan luas bidang tekan. Satuan SI tekanan adalah pascal (Pa), dengan 1 Pa = 1 N/m². Zat padat, zat cair, dan gas semuanya dapat menimbulkan tekanan, tetapi cara kerjanya berbeda.</p>
+  <h3>Tujuan pembelajaran</h3>
+  <ul>
+    <li>Menghitung tekanan zat padat dan menjelaskan penerapannya.</li>
+    <li>Menghitung tekanan hidrostatis dan menggunakan prinsip bejana berhubungan.</li>
+    <li>Menerapkan hukum Pascal dan hukum Archimedes pada situasi nyata.</li>
+    <li>Menjelaskan tekanan udara, alat ukurnya, dan hubungan tekanan dengan volume gas.</li>
+  </ul>
+  <h3>Ringkasan rumus</h3>
+  <div class="tbl"><table>
+    <tr><th>Konsep</th><th>Rumus</th><th>Keterangan</th></tr>
+    <tr><td>Tekanan zat padat</td><td>P = F / A</td><td>F gaya tekan (N), A luas bidang tekan (m²)</td></tr>
+    <tr><td>Berat benda</td><td>w = m × g</td><td>g = 10 N/kg</td></tr>
+    <tr><td>Tekanan hidrostatis</td><td>P = ρ × g × h</td><td>ρ massa jenis zat cair (kg/m³), h kedalaman (m)</td></tr>
+    <tr><td>Hukum Pascal</td><td>F₁ / A₁ = F₂ / A₂</td><td>Tekanan diteruskan sama besar</td></tr>
+    <tr><td>Gaya apung (Archimedes)</td><td>F<sub>A</sub> = ρ<sub>cair</sub> × g × V<sub>tercelup</sub></td><td>Sama dengan berat zat cair yang dipindahkan</td></tr>
+    <tr><td>Hukum Boyle</td><td>P₁ × V₁ = P₂ × V₂</td><td>Gas dalam ruang tertutup, suhu tetap</td></tr>
+  </table></div>
+  <h3>Kartu istilah (ketuk untuk membalik)</h3>
+  <div class="grid" id="flips"></div>
+</section>
+
+<!-- PADAT -->
+<section class="panel" id="p-padat" hidden>
+  <h2>Tekanan zat padat</h2>
+  <p>Ketika sebuah benda padat menekan permukaan, gaya tekannya biasanya berasal dari berat benda tersebut. Tekanan yang dihasilkan bergantung pada besar gaya dan luas bidang yang bersentuhan dengan permukaan. Semakin besar gaya, tekanan semakin besar; semakin besar luas bidang tekan, tekanan semakin kecil.</p>
+  <div class="formula">P = F / A</div>
+  <p>Satuan yang sering dipakai adalah N/m² (pascal). Luas harus diubah ke m² sebelum menghitung, dengan 1 m² = 10.000 cm². Pada benda yang diletakkan, F = w = m × g.</p>
+  <h3>Kalkulator tekanan zat padat</h3>
+  <div class="card">
+    <div class="steps" id="presetP">
+      <button data-m="50" data-a="1">Tumit sepatu hak</button>
+      <button data-m="50" data-a="250">Sepatu datar</button>
+      <button data-m="50" data-a="1500">Berdiri di papan lebar</button>
+    </div>
+    <div class="ctl"><label for="mP">Massa benda</label><input type="range" id="mP" min="1" max="200" value="50"><output id="mPo"></output></div>
+    <div class="ctl"><label for="aP">Luas bidang tekan</label><input type="range" id="aP" min="1" max="2000" value="250"><output id="aPo"></output></div>
+    <div class="result">
+      <div><small>Gaya tekan (berat)</small><span class="v" id="rF"></span></div>
+      <div><small>Luas dalam m²</small><span class="v" id="rA"></span></div>
+      <div><small>Tekanan</small><span class="v" id="rP"></span></div>
+    </div>
+    <div class="bar"><i id="barP" style="width:10%"></i></div>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:0">Geser luas bidang menjadi lebih kecil dan perhatikan bahwa tekanan naik, padahal massa tidak berubah.</p>
+  </div>
+  <h3>Penerapan dalam kehidupan</h3>
+  <div class="tbl"><table>
+    <tr><th>Tujuan</th><th>Cara</th><th>Contoh</th></tr>
+    <tr><td>Memperbesar tekanan</td><td>Memperkecil luas bidang tekan</td><td>Pisau, paku, jarum, cangkul, gigi seri</td></tr>
+    <tr><td>Memperkecil tekanan</td><td>Memperbesar luas bidang tekan</td><td>Roda traktor lebar, sepatu salju, fondasi rumah, ban truk besar</td></tr>
+  </table></div>
+  <div class="imgref"><strong>Gambar rujukan.</strong> Gambar hasil pencarian web ditampilkan pada percakapan di atas karena halaman ini tidak dapat memuat gambar dari situs lain. Sumber yang ditemukan: "Tekanan Zat Padat dan Penerapannya di Kehidupan Sehari-hari", "TEKANAN ZAT PADAT.ppt", dan "Bab iii tekanan | DOC".</div>
+</section>
+
+<!-- CAIR -->
+<section class="panel" id="p-cair" hidden>
+  <h2>Tekanan zat cair</h2>
+  <p>Zat cair memiliki berat sehingga menimbulkan tekanan pada dasar dan dinding wadahnya. Tekanan yang disebabkan oleh berat zat cair yang diam disebut <b>tekanan hidrostatis</b>. Tekanan ini bekerja ke segala arah pada kedalaman yang sama.</p>
+  <div class="formula">P<sub>h</sub> = ρ × g × h</div>
+  <ul>
+    <li>Tekanan bertambah seiring bertambahnya kedalaman (h).</li>
+    <li>Tekanan bertambah jika massa jenis zat cair (ρ) lebih besar.</li>
+    <li>Pada kedalaman yang sama dalam zat cair yang sama, tekanan sama besar, apa pun bentuk dan luas wadahnya.</li>
+  </ul>
+  <p>Tekanan mutlak pada kedalaman h di dalam zat cair terbuka adalah tekanan hidrostatis ditambah tekanan udara luar: P<sub>total</sub> = P<sub>0</sub> + ρgh. Dalam modul ini P<sub>0</sub> dianggap sekitar 100.000 Pa.</p>
+  <h3>Kalkulator tekanan hidrostatis</h3>
+  <div class="card">
+    <div class="ctl"><label for="liq">Jenis zat cair</label>
+      <select id="liq"><option value="1000">Air tawar (1.000 kg/m³)</option><option value="1030">Air laut (1.030 kg/m³)</option><option value="800">Minyak (800 kg/m³)</option><option value="13600">Raksa (13.600 kg/m³)</option></select><span></span></div>
+    <div class="ctl"><label for="hC">Kedalaman</label><input type="range" id="hC" min="0" max="100" value="10"><output id="hCo"></output></div>
+    <div class="result">
+      <div><small>Tekanan hidrostatis</small><span class="v" id="rH"></span></div>
+      <div><small>Tekanan total (+ udara 100.000 Pa)</small><span class="v" id="rT"></span></div>
+      <div><small>Perbandingan dengan 10 m</small><span class="v" id="rR"></span></div>
+    </div>
+    <div class="bar"><i id="barH" style="width:10%"></i></div>
+  </div>
+  <h3>Bejana berhubungan</h3>
+  <p>Jika bejana berhubungan diisi satu jenis zat cair yang diam, permukaan zat cair di semua kolom sama tinggi, apa pun bentuk kolomnya. Jika diisi dua zat cair yang tidak bercampur, tinggi kolom berbanding terbalik dengan massa jenisnya. Pada garis batas kedua zat cair, tekanan di kedua sisi sama besar.</p>
+  <div class="formula">ρ₁ × h₁ = ρ₂ × h₂</div>
+  <p>Contoh penerapan: teko, poros air (sistem air minum bertingkat), alat waterpass, dan penyaluran air di kota.</p>
+  <div class="imgref"><strong>Gambar rujukan.</strong> Gambar hasil pencarian ditampilkan pada percakapan di atas. Sumber yang ditemukan: "PPT Tekanan Hidrostatis", "TEKANAN ZAT CAIR" (Nana Biologi), dan "Tekanan Pada Zat.pdf".</div>
+</section>
+
+<!-- PASCAL -->
+<section class="panel" id="p-pascal" hidden>
+  <h2>Hukum Pascal</h2>
+  <p>Hukum Pascal menyatakan bahwa tekanan yang diberikan pada zat cair dalam ruang tertutup diteruskan sama besar ke segala arah. Karena tekanan sama di semua titik, gaya kecil pada penampang kecil dapat menghasilkan gaya besar pada penampang besar.</p>
+  <div class="formula">P₁ = P₂ → F₁ / A₁ = F₂ / A₂</div>
+  <p>Penerapan hukum ini meliputi dongkrak hidrolik, rem hidrolik, pompa hidrolik, kursi dokter gigi, dan mesin pengangkat mobil. Gaya yang diperbesar tidak berarti energi bertambah. Pengisap kecil harus bergerak lebih jauh daripada pengisap besar, sehingga usaha (gaya × perpindahan) pada kedua sisi sama besar.</p>
+  <h3>Kalkulator dongkrak hidrolik</h3>
+  <div class="card">
+    <div class="ctl"><label for="f1">Gaya F₁ (pengisap kecil)</label><input type="range" id="f1" min="10" max="500" value="100"><output id="f1o"></output></div>
+    <div class="ctl"><label for="a1">Luas A₁ (kecil)</label><input type="range" id="a1" min="5" max="50" value="10"><output id="a1o"></output></div>
+    <div class="ctl"><label for="a2">Luas A₂ (besar)</label><input type="range" id="a2" min="100" max="1000" step="10" value="400"><output id="a2o"></output></div>
+    <div class="result">
+      <div><small>Gaya pada pengisap besar F₂</small><span class="v" id="rF2"></span></div>
+      <div><small>Keuntungan mekanis A₂/A₁</small><span class="v" id="rKM"></span></div>
+      <div><small>Jika pengisap kecil turun 10 cm, pengisap besar naik</small><span class="v" id="rD"></span></div>
+    </div>
+  </div>
+  <div class="imgref"><strong>Gambar rujukan.</strong> Gambar hasil pencarian ditampilkan pada percakapan di atas. Sumber yang ditemukan: "Hukum Pascal: Bunyi, Persamaan (Rumus), & Dongkrak Hidrolik" (Aisyah), "Hukum Pascal: Pengertian, Rumus, Manfaat, dan Contoh Soal" (TribunNews), dan "Hukum Pascal - Belajar Fisika SMK".</div>
+</section>
+
+<!-- ARCHIMEDES -->
+<section class="panel" id="p-arch" hidden>
+  <h2>Hukum Archimedes</h2>
+  <p>Benda yang dicelupkan sebagian atau seluruhnya ke dalam zat cair mengalami gaya ke atas yang besarnya sama dengan berat zat cair yang dipindahkan. Gaya ini disebut <b>gaya apung</b>. Gaya apung muncul karena tekanan hidrostatis di bagian bawah benda lebih besar daripada di bagian atas.</p>
+  <div class="formula">F<sub>A</sub> = ρ<sub>cair</sub> × g × V<sub>tercelup</sub></div>
+  <p>Berat benda di dalam zat cair (berat semu) lebih kecil daripada beratnya di udara: w<sub>cair</sub> = w<sub>udara</sub> − F<sub>A</sub>.</p>
+  <h3>Terapung, melayang, atau tenggelam</h3>
+  <div class="tbl"><table>
+    <tr><th>Keadaan</th><th>Syarat massa jenis</th><th>Gaya</th></tr>
+    <tr><td>Terapung</td><td>ρ benda &lt; ρ zat cair</td><td>F<sub>A</sub> = w (hanya sebagian benda tercelup)</td></tr>
+    <tr><td>Melayang</td><td>ρ benda = ρ zat cair</td><td>F<sub>A</sub> = w (seluruh benda tercelup)</td></tr>
+    <tr><td>Tenggelam</td><td>ρ benda &gt; ρ zat cair</td><td>F<sub>A</sub> &lt; w</td></tr>
+  </table></div>
+  <h3>Simulator benda dalam zat cair</h3>
+  <div class="card">
+    <p style="margin-top:0">Anggap volume benda 1.000 cm³ (0,001 m³).</p>
+    <div class="ctl"><label for="obj">Benda</label>
+      <select id="obj"><option value="240">Gabus (240 kg/m³)</option><option value="600">Kayu (600 kg/m³)</option><option value="920">Es (920 kg/m³)</option><option value="1000">Benda 1.000 kg/m³</option><option value="2700">Aluminium (2.700 kg/m³)</option><option value="7800">Besi (7.800 kg/m³)</option></select><span></span></div>
+    <div class="ctl"><label for="liq2">Zat cair</label>
+      <select id="liq2"><option value="1000">Air tawar (1.000 kg/m³)</option><option value="1030">Air laut (1.030 kg/m³)</option><option value="800">Minyak (800 kg/m³)</option><option value="13600">Raksa (13.600 kg/m³)</option></select><span></span></div>
+    <div class="result">
+      <div><small>Keadaan benda</small><span class="v" id="rS"></span></div>
+      <div><small>Berat benda</small><span class="v" id="rW"></span></div>
+      <div><small>Gaya apung</small><span class="v" id="rFA"></span></div>
+      <div><small>Bagian yang tercelup</small><span class="v" id="rV"></span></div>
+    </div>
+    <div class="bar"><i id="barA" style="width:50%"></i></div>
+  </div>
+  <h3>Penerapan</h3>
+  <ul>
+    <li><b>Kapal laut:</b> badan kapal berongga sehingga massa jenis rata-rata kapal (baja ditambah udara di dalamnya) lebih kecil daripada air.</li>
+    <li><b>Kapal selam:</b> tangki ballast diisi air agar tenggelam dan diisi udara agar naik.</li>
+    <li><b>Balon udara:</b> terisi gas yang massa jenisnya lebih kecil daripada udara sekitar sehingga mengapung di udara.</li>
+    <li><b>Hidrometer:</b> alat pengukur massa jenis zat cair berdasarkan kedalaman alat tercelup.</li>
+  </ul>
+  <div class="imgref"><strong>Gambar rujukan.</strong> Gambar hasil pencarian ditampilkan pada percakapan di atas. Sumber yang ditemukan: "Blog Belajar IPA SMP: Hukum Archimedes", "Fluida Statis - Hukum Archimedes dan Gaya Apung" (Ahmad Dahlan), dan "Contoh Benda yang Terapung dan Tenggelam".</div>
+</section>
+
+<!-- GAS -->
+<section class="panel" id="p-gas" hidden>
+  <h2>Tekanan gas</h2>
+  <h3>Tekanan udara atmosfer</h3>
+  <p>Udara memiliki berat sehingga lapisan atmosfer menekan permukaan bumi. Pada permukaan laut tekanan udara sekitar 76 cmHg, setara dengan sekitar 100.000 Pa dan disebut 1 atmosfer. Tekanan udara menurun saat ketinggian bertambah, kira-kira 1 cmHg setiap kenaikan 100 m, karena lapisan udara di atas kita semakin tipis.</p>
+  <p>Alat ukur tekanan udara adalah <b>barometer</b>. Barometer raksa mengacu pada percobaan Torricelli, yaitu tinggi kolom raksa dalam tabung terbalik mengimbangi tekanan udara luar. Pada ketinggian tinggi air mendidih pada suhu lebih rendah daripada 100 °C karena tekanan udara lebih rendah.</p>
+  <h3>Simulasi tekanan udara menurut ketinggian</h3>
+  <div class="card">
+    <div class="ctl"><label for="alt">Ketinggian</label><input type="range" id="alt" min="0" max="3000" step="100" value="0"><output id="alto"></output></div>
+    <div class="result">
+      <div><small>Tekanan udara (pendekatan)</small><span class="v" id="rAlt"></span></div>
+      <div><small>Dalam kilopascal</small><span class="v" id="rAltK"></span></div>
+    </div>
+    <div class="bar"><i id="barAlt" style="width:100%"></i></div>
+    <p style="font-size:.9rem;color:var(--muted);margin-bottom:0">Pendekatan SMP: tekanan turun 1 cmHg tiap naik 100 m. Nilai sebenarnya sedikit berbeda dan bergantung pada cuaca.</p>
+  </div>
+  <h3>Tekanan gas dalam ruang tertutup</h3>
+  <p>Tekanan gas dalam ruang tertutup berasal dari tumbukan molekul gas pada dinding wadah. Tekanan gas diukur dengan <b>manometer</b>. Pada manometer pipa terbuka berisi raksa, tekanan gas sama dengan tekanan udara luar ditambah selisih tinggi raksa pada kedua kaki bila permukaan raksa di sisi gas lebih rendah.</p>
+  <div class="formula">P<sub>gas</sub> = P<sub>udara</sub> + h (dalam cmHg)</div>
+  <h3>Hukum Boyle</h3>
+  <p>Pada suhu tetap, hasil kali tekanan dan volume gas dalam ruang tertutup adalah tetap. Jika volume diperkecil, molekul lebih sering menumbuk dinding sehingga tekanan naik.</p>
+  <div class="formula">P₁ × V₁ = P₂ × V₂</div>
+  <div class="card">
+    <p style="margin-top:0">Anggap gas awal bertekanan 1 atm dengan volume 600 mL, suhu tetap.</p>
+    <div class="ctl"><label for="vol">Volume gas</label><input type="range" id="vol" min="100" max="1000" step="10" value="600"><output id="volo"></output></div>
+    <div class="result">
+      <div><small>Tekanan gas</small><span class="v" id="rBoyle"></span></div>
+      <div><small>Hasil P × V</small><span class="v" id="rPV"></span></div>
+    </div>
+  </div>
+  <div class="imgref"><strong>Gambar rujukan.</strong> Gambar hasil pencarian ditampilkan pada percakapan di atas. Sumber yang ditemukan: "Barometer: Alat Ukur Tekanan Udara" (idschool.net), "Kenapa Air Cepat Mendidih di Gunung" (Studio Sains dan Edukasi), "Tekanan Gas dalam Ruang Tertutup di Kehidupan Sehari-hari | Fisika Kelas 8", dan "Rumus Tekanan Gas Manometer Tertutup" (idschool.net).</div>
+</section>
+
+<!-- TKA -->
+<section class="panel" id="p-tka" hidden>
+  <h2>Latihan soal bergaya TKA</h2>
+  <p>Kerjakan setiap soal, lalu tekan Periksa untuk melihat pembahasan. Gunakan g = 10 m/s², massa jenis air 1.000 kg/m³, dan tekanan udara 1 atm = 76 cmHg ≈ 100.000 Pa. Ada tiga bentuk soal: pilihan ganda, pilihan ganda kompleks (lebih dari satu jawaban benar), dan pernyataan benar atau salah.</p>
+  <div id="quiz"></div>
+  <div class="score" id="score">Skor: 0 / 0</div>
+</section>
+
+<!-- CERITA -->
+<section class="panel" id="p-cerita" hidden>
+  <h2>Soal cerita penalaran</h2>
+  <p>Setiap kasus memuat beberapa pertanyaan yang menuntut perhitungan dan penjelasan bertahap. Tulis jawabanmu terlebih dahulu pada kotak yang tersedia, lalu buka kunci dan rubrik untuk mencocokkan jawabanmu.</p>
+  <div id="stories"></div>
+</section>
+</div>
+
+<script>
+function fmt(n,d){return n.toLocaleString('id-ID',{maximumFractionDigits:d==null?2:d})}
+// ---------- Tab ----------
+var tabs=document.getElementById('tabs');
+function show(id){
+  document.querySelectorAll('section.panel').forEach(function(s){s.hidden=(s.id!=='p-'+id)});
+  tabs.querySelectorAll('button').forEach(function(b){b.setAttribute('aria-selected',b.dataset.tab===id?'true':'false')});
+  window.scrollTo({top:0});
+}
+tabs.addEventListener('click',function(e){var b=e.target.closest('button');if(b)show(b.dataset.tab)});
+
+// ---------- Kartu istilah ----------
+var terms=[
+ ['Tekanan','Gaya yang bekerja tegak lurus pada tiap satuan luas bidang tekan. Satuan SI: pascal (Pa) atau N/m².'],
+ ['Bidang tekan','Permukaan yang bersentuhan langsung dengan benda penekan. Luasnya dipakai sebagai A pada rumus P = F/A.'],
+ ['Tekanan hidrostatis','Tekanan yang ditimbulkan oleh berat zat cair yang diam; besarnya ρ × g × h.'],
+ ['Massa jenis','Massa tiap satuan volume benda (ρ = m/V). Satuan: kg/m³.'],
+ ['Bejana berhubungan','Wadah berhubungan yang diisi zat cair; permukaan zat cair sejenis sama tinggi pada semua kolom.'],
+ ['Hukum Pascal','Tekanan pada zat cair dalam ruang tertutup diteruskan sama besar ke segala arah.'],
+ ['Gaya apung','Gaya ke atas pada benda yang tercelup, sama dengan berat zat cair yang dipindahkan.'],
+ ['Barometer','Alat untuk mengukur tekanan udara atmosfer.'],
+ ['Manometer','Alat untuk mengukur tekanan gas dalam ruang tertutup.'],
+ ['Hukum Boyle','Pada suhu tetap, P × V gas dalam ruang tertutup selalu tetap.']
+];
+var fl=document.getElementById('flips');
+terms.forEach(function(t){
+  var b=document.createElement('button');b.className='flip';b.type='button';
+  b.innerHTML='<b>'+t[0]+'</b><span>Ketuk untuk melihat arti</span>';
+  var open=false;
+  b.onclick=function(){open=!open;b.classList.toggle('open',open);b.querySelector('span').textContent=open?t[1]:'Ketuk untuk melihat arti'};
+  fl.appendChild(b);
+});
+
+// ---------- Kalkulator zat padat ----------
+var mP=document.getElementById('mP'),aP=document.getElementById('aP');
+function calcP(){
+  var m=+mP.value,a=+aP.value,F=m*10,A=a/10000,P=F/A;
+  document.getElementById('mPo').textContent=m+' kg';
+  document.getElementById('aPo').textContent=a+' cm²';
+  document.getElementById('rF').textContent=fmt(F,0)+' N';
+  document.getElementById('rA').textContent=fmt(A,4)+' m²';
+  document.getElementById('rP').textContent=fmt(P,0)+' Pa';
+  document.getElementById('barP').style.width=Math.min(100,Math.log10(P)/7*100)+'%';
+}
+mP.oninput=aP.oninput=calcP;
+document.getElementById('presetP').addEventListener('click',function(e){var b=e.target.closest('button');if(!b)return;mP.value=b.dataset.m;aP.value=b.dataset.a;calcP()});
+calcP();
+
+// ---------- Kalkulator hidrostatis ----------
+var liq=document.getElementById('liq'),hC=document.getElementById('hC');
+function calcH(){
+  var r=+liq.value,h=+hC.value,P=r*10*h;
+  document.getElementById('hCo').textContent=h+' m';
+  document.getElementById('rH').textContent=fmt(P,0)+' Pa';
+  document.getElementById('rT').textContent=fmt(P+100000,0)+' Pa';
+  document.getElementById('rR').textContent=h===0?'0':fmt(h/10,2)+' kali';
+  document.getElementById('barH').style.width=h+'%';
+}
+liq.onchange=hC.oninput=calcH;calcH();
+
+// ---------- Hidrolik ----------
+var f1=document.getElementById('f1'),a1=document.getElementById('a1'),a2=document.getElementById('a2');
+function calcHyd(){
+  var F=+f1.value,A1=+a1.value,A2=+a2.value;
+  document.getElementById('f1o').textContent=F+' N';
+  document.getElementById('a1o').textContent=A1+' cm²';
+  document.getElementById('a2o').textContent=A2+' cm²';
+  document.getElementById('rF2').textContent=fmt(F*A2/A1,0)+' N';
+  document.getElementById('rKM').textContent=fmt(A2/A1,1)+' kali';
+  document.getElementById('rD').textContent=fmt(10*A1/A2,2)+' cm';
+}
+f1.oninput=a1.oninput=a2.oninput=calcHyd;calcHyd();
+
+// ---------- Archimedes ----------
+var obj=document.getElementById('obj'),liq2=document.getElementById('liq2');
+function calcA(){
+  var rb=+obj.value,rc=+liq2.value,V=0.001,w=rb*10*V,st,fa,frac;
+  if(rb<rc){st='Terapung';frac=rb/rc;fa=w}
+  else if(rb===rc){st='Melayang';frac=1;fa=w}
+  else{st='Tenggelam';frac=1;fa=rc*10*V}
+  document.getElementById('rS').textContent=st;
+  document.getElementById('rW').textContent=fmt(w,2)+' N';
+  document.getElementById('rFA').textContent=fmt(fa,2)+' N';
+  document.getElementById('rV').textContent=fmt(frac*100,1)+' %';
+  document.getElementById('barA').style.width=(frac*100)+'%';
+}
+obj.onchange=liq2.onchange=calcA;calcA();
+
+// ---------- Gas ----------
+var alt=document.getElementById('alt');
+function calcAlt(){
+  var h=+alt.value,p=76-h/100;
+  document.getElementById('alto').textContent=fmt(h,0)+' m';
+  document.getElementById('rAlt').textContent=fmt(p,0)+' cmHg';
+  document.getElementById('rAltK').textContent='± '+fmt(p*1.333,1)+' kPa';
+  document.getElementById('barAlt').style.width=(p/76*100)+'%';
+}
+alt.oninput=calcAlt;calcAlt();
+var vol=document.getElementById('vol');
+function calcB(){
+  var v=+vol.value,p=600/v;
+  document.getElementById('volo').textContent=v+' mL';
+  document.getElementById('rBoyle').textContent=fmt(p,2)+' atm';
+  document.getElementById('rPV').textContent=fmt(p*v,0)+' atm·mL';
+}
+vol.oninput=calcB;calcB();
+
+// ---------- Soal TKA ----------
+var Q=[
+ {t:'pg',q:'Sebuah balok bermassa 10 kg diletakkan pada lantai dengan alas berukuran 20 cm × 25 cm. Tekanan yang diberikan balok pada lantai adalah ....',o:['500 Pa','2.000 Pa','5.000 Pa','20.000 Pa'],a:1,e:'F = w = m·g = 10 × 10 = 100 N. A = 0,20 × 0,25 = 0,05 m². P = F/A = 100/0,05 = 2.000 Pa.'},
+ {t:'pg',q:'Tiga balok memiliki gaya tekan dan luas bidang tekan seperti pada tabel. Balok yang memberikan tekanan terbesar adalah ....',tbl:'<div class="tbl"><table><tr><th>Balok</th><th class="num">Gaya tekan (N)</th><th class="num">Luas bidang (m²)</th></tr><tr><td>A</td><td class="num">60</td><td class="num">0,03</td></tr><tr><td>B</td><td class="num">80</td><td class="num">0,02</td></tr><tr><td>C</td><td class="num">120</td><td class="num">0,06</td></tr></table></div>',o:['Balok A','Balok B','Balok C','Ketiganya sama'],a:1,e:'P(A) = 60/0,03 = 2.000 Pa; P(B) = 80/0,02 = 4.000 Pa; P(C) = 120/0,06 = 2.000 Pa. Balok B memberikan tekanan terbesar.'},
+ {t:'pg',q:'Pisau yang tajam lebih mudah memotong daripada pisau tumpul karena pisau yang tajam ....',o:['memiliki gaya yang lebih kecil','memiliki luas bidang tekan yang lebih kecil sehingga tekanannya lebih besar','memiliki massa jenis lebih besar','memiliki berat lebih kecil'],a:1,e:'Pada gaya yang sama, luas bidang tekan yang kecil menghasilkan tekanan yang lebih besar (P = F/A).'},
+ {t:'pg',q:'Tekanan hidrostatis pada kedalaman 5 m di dalam air tawar (ρ = 1.000 kg/m³, g = 10 m/s²) adalah ....',o:['5.000 Pa','50.000 Pa','500.000 Pa','5 Pa'],a:1,e:'P = ρ·g·h = 1.000 × 10 × 5 = 50.000 Pa.'},
+ {t:'pg',q:'Seorang penyelam turun dari kedalaman 10 m ke kedalaman 30 m di laut yang sama. Perbandingan tekanan hidrostatis di kedalaman 30 m terhadap kedalaman 10 m adalah ....',o:['1 : 3','3 : 1','1 : 1','9 : 1'],a:1,e:'Tekanan hidrostatis sebanding dengan kedalaman jika ρ dan g tetap. 30 : 10 = 3 : 1.'},
+ {t:'pg',q:'Pada sebuah bejana berhubungan, kaki kiri diisi air setinggi 8 cm (ρ = 1.000 kg/m³) dan kaki kanan diisi minyak setinggi 10 cm hingga kedua zat cair berada pada garis batas yang sama. Massa jenis minyak adalah ....',o:['600 kg/m³','800 kg/m³','1.000 kg/m³','1.250 kg/m³'],a:1,e:'ρ_minyak × h_minyak = ρ_air × h_air → ρ × 10 = 1.000 × 8 → ρ = 800 kg/m³.'},
+ {t:'pg',q:'Sebuah dongkrak hidrolik memiliki pengisap kecil seluas 10 cm² dan pengisap besar seluas 500 cm². Jika pengisap kecil ditekan dengan gaya 40 N, gaya yang dihasilkan pada pengisap besar adalah ....',o:['800 N','2.000 N','20.000 N','200 N'],a:1,e:'F₂ = F₁ × A₂/A₁ = 40 × 500/10 = 2.000 N.'},
+ {t:'pg',q:'Berat sebuah benda di udara 30 N dan ketika seluruhnya tercelup dalam air menjadi 24 N. Volume benda tersebut adalah .... (ρ air = 1.000 kg/m³, g = 10 m/s²)',o:['60 cm³','600 cm³','6.000 cm³','0,6 cm³'],a:1,e:'Gaya apung = 30 − 24 = 6 N. F_A = ρ·g·V → V = 6/(1.000 × 10) = 6 × 10⁻⁴ m³ = 600 cm³.'},
+ {t:'pg',q:'Kapal baja yang sangat besar dapat terapung di laut karena ....',o:['baja lebih ringan daripada air','massa jenis rata-rata kapal termasuk rongga udaranya lebih kecil daripada massa jenis air laut','kapal tidak menekan air','tekanan hidrostatis di dasar kapal nol'],a:1,e:'Badan kapal berongga sehingga massa jenis rata-rata kapal lebih kecil daripada air laut. Dengan demikian gaya apung dapat mengimbangi berat kapal.'},
+ {t:'pg',q:'Di kaki gunung tekanan udara 76 cmHg. Jika tekanan udara turun 1 cmHg setiap kenaikan 100 m, tekanan udara di puncak yang tingginya 2.000 m adalah ....',o:['36 cmHg','56 cmHg','74 cmHg','96 cmHg'],a:1,e:'Penurunan = 2.000/100 = 20 cmHg. Tekanan di puncak = 76 − 20 = 56 cmHg.'},
+ {t:'pg',q:'Sejumlah gas dalam ruang tertutup bervolume 600 mL dan bertekanan 1 atm. Pada suhu tetap, gas dimampatkan hingga volumenya 200 mL. Tekanan gas sekarang adalah ....',o:['0,33 atm','2 atm','3 atm','6 atm'],a:2,e:'P₁V₁ = P₂V₂ → 1 × 600 = P₂ × 200 → P₂ = 3 atm.'},
+ {t:'mc',q:'Perhatikan massa jenis berikut: kayu 600 kg/m³, es 920 kg/m³, besi 7.800 kg/m³, gabus 240 kg/m³. Massa jenis air 1.000 kg/m³. Pilih semua benda yang terapung di dalam air.',o:['Kayu','Es','Besi','Gabus'],a:[0,1,3],e:'Benda terapung jika massa jenisnya lebih kecil daripada massa jenis air. Kayu, es, dan gabus memenuhi syarat itu, sedangkan besi tenggelam.'},
+ {t:'mc',q:'Pilih semua pernyataan yang benar.',o:['Tekanan zat padat berbanding terbalik dengan luas bidang tekan.','Tekanan hidrostatis bergantung pada bentuk bejana.','Tekanan hidrostatis bertambah seiring bertambahnya kedalaman.','Menurut hukum Pascal, tekanan pada zat cair tertutup diteruskan sama besar ke segala arah.'],a:[0,2,3],e:'Tekanan hidrostatis bergantung pada massa jenis zat cair, percepatan gravitasi, dan kedalaman, bukan pada bentuk bejana.'},
+ {t:'bs',q:'Tentukan benar atau salah untuk setiap pernyataan.',items:[
+   ['Satuan tekanan dalam SI adalah N/m² atau pascal.',true],
+   ['Pada kedalaman yang sama dalam air, tekanan hidrostatis di bejana sempit lebih besar daripada di bejana lebar.',false],
+   ['Benda melayang jika massa jenis benda sama dengan massa jenis zat cair.',true],
+   ['Tekanan udara bertambah ketika ketinggian bertambah.',false]],
+  e:'Tekanan hidrostatis hanya bergantung pada ρ, g, dan h, bukan lebar bejana. Tekanan udara berkurang saat ketinggian bertambah karena lapisan udara di atas semakin tipis.'}
+];
+var qz=document.getElementById('quiz'),done=0,right=0;
+function upScore(){document.getElementById('score').textContent='Skor: '+right+' / '+Q.length+' (dijawab '+done+')'}
+Q.forEach(function(q,i){
+  var d=document.createElement('div');d.className='q';
+  var tag=q.t==='pg'?'Pilihan ganda':q.t==='mc'?'Pilihan ganda kompleks':'Benar / Salah';
+  var h='<div class="tag">Soal '+(i+1)+' · '+tag+'</div><p><b>'+q.q+'</b></p>'+(q.tbl||'');
+  if(q.t==='bs'){
+    q.items.forEach(function(it,j){h+='<div class="bsrow"><span style="flex:1 1 260px">'+it[0]+'</span><span><label><input type="radio" name="q'+i+'_'+j+'" value="1"> Benar</label><label><input type="radio" name="q'+i+'_'+j+'" value="0"> Salah</label></span></div>'});
+  }else{
+    q.o.forEach(function(o,j){h+='<label class="opt"><input type="'+(q.t==='pg'?'radio':'checkbox')+'" name="q'+i+'" value="'+j+'"><span>'+o+'</span></label>'});
+  }
+  h+='<button class="btn primary" type="button" style="margin-top:8px">Periksa</button><div class="fb" hidden></div>';
+  d.innerHTML=h;qz.appendChild(d);
+  var btn=d.querySelector('button'),fb=d.querySelector('.fb'),checked=false;
+  btn.onclick=function(){
+    if(checked)return;var ok=false;
+    if(q.t==='pg'){
+      var s=d.querySelector('input:checked');if(!s){fb.hidden=false;fb.className='fb no';fb.textContent='Pilih satu jawaban terlebih dahulu.';return}
+      ok=(+s.value===q.a);
+    }else if(q.t==='mc'){
+      var v=[].map.call(d.querySelectorAll('input:checked'),function(x){return +x.value}).sort();
+      if(!v.length){fb.hidden=false;fb.className='fb no';fb.textContent='Pilih minimal satu jawaban terlebih dahulu.';return}
+      ok=(v.join()===q.a.join());
+    }else{
+      var all=true;ok=true;
+      q.items.forEach(function(it,j){var s=d.querySelector('input[name="q'+i+'_'+j+'"]:checked');if(!s){all=false}else if((s.value==='1')!==it[1]){ok=false}});
+      if(!all){fb.hidden=false;fb.className='fb no';fb.textContent='Jawab semua pernyataan terlebih dahulu.';return}
+    }
+    checked=true;done++;if(ok)right++;
+    if(q.t!=='bs'){d.querySelectorAll('.opt').forEach(function(l,j){var isA=q.t==='pg'?j===q.a:q.a.indexOf(j)>-1,on=l.querySelector('input').checked;if(isA)l.classList.add('right');else if(on)l.classList.add('wrong');l.querySelector('input').disabled=true})}
+    else d.querySelectorAll('input').forEach(function(x){x.disabled=true});
+    fb.hidden=false;fb.className='fb '+(ok?'ok':'no');fb.innerHTML='<b>'+(ok?'Benar.':'Belum tepat.')+'</b> '+q.e;
+    btn.hidden=true;upScore();
+  };
+});
+upScore();
+
+// ---------- Soal cerita ----------
+var S=[
+ {t:'Kasus 1. Memindahkan lemari',s:'Pak Dedi memindahkan sebuah lemari bermassa 80 kg ke ruang tamu yang berlantai keramik. Lemari itu bertumpu pada empat kaki kecil, dan masing-masing kaki berukuran 5 cm × 5 cm. Beberapa bulan kemudian ubin di bawah kaki lemari retak. Tetangganya menyarankan agar lemari dialasi papan tebal berukuran 80 cm × 50 cm yang menempel penuh pada lantai. Anggap berat papan diabaikan dan g = 10 m/s².',
+  qs:[
+   ['a. Hitung gaya tekan yang diberikan lemari pada lantai.','F = w = m × g = 80 × 10 = 800 N.','Rubrik: rumus berat [1], hasil 800 N dengan satuan [1].'],
+   ['b. Hitung tekanan lemari pada lantai ketika bertumpu pada empat kaki.','Luas satu kaki = 5 × 5 = 25 cm². Luas empat kaki = 100 cm² = 0,01 m². P = F/A = 800/0,01 = 80.000 Pa.','Rubrik: total luas empat kaki [1], konversi ke m² [1], P = 80.000 Pa [1].'],
+   ['c. Hitung tekanan setelah lemari dialasi papan.','Luas papan = 80 × 50 = 4.000 cm² = 0,4 m². P = 800/0,4 = 2.000 Pa.','Rubrik: luas papan dalam m² [1], P = 2.000 Pa [1].'],
+   ['d. Bandingkan kedua tekanan dan jelaskan mengapa ubin lebih aman setelah ada papan.','Tekanan awal 80.000 Pa dan setelah papan 2.000 Pa, yaitu 40 kali lebih kecil. Gaya tekan sama besar (800 N), tetapi luas bidang tekan diperbesar sehingga tekanan pada tiap bagian ubin lebih kecil dan ubin tidak retak.','Rubrik: perbandingan 40 kali [1], gaya tetap tetapi luas membesar [1], kesimpulan tekanan mengecil [1].']
+  ]},
+ {t:'Kasus 2. Rina menyelam di kolam',s:'Rina menyelam di kolam renang berisi air tawar (ρ = 1.000 kg/m³). Ketika berada di kedalaman 3 m ia merasa telinganya agak tertekan, dan ketika turun ke kedalaman 6 m rasa tertekan itu semakin kuat. Luas gendang telinga Rina sekitar 0,5 cm². Tekanan udara di permukaan kolam adalah 100.000 Pa dan g = 10 m/s².',
+  qs:[
+   ['a. Hitung tekanan hidrostatis pada kedalaman 3 m dan 6 m.','P(3 m) = 1.000 × 10 × 3 = 30.000 Pa. P(6 m) = 1.000 × 10 × 6 = 60.000 Pa.','Rubrik: rumus ρgh [1], dua hasil benar [1].'],
+   ['b. Hitung tekanan total (mutlak) yang dialami Rina pada kedalaman 6 m.','P total = P udara + P hidrostatis = 100.000 + 60.000 = 160.000 Pa.','Rubrik: menjumlahkan tekanan udara [1], hasil 160.000 Pa [1].'],
+   ['c. Hitung gaya akibat tekanan hidrostatis pada satu gendang telinga di kedalaman 6 m.','A = 0,5 cm² = 0,5 × 10⁻⁴ m² = 5 × 10⁻⁵ m². F = P × A = 60.000 × 5 × 10⁻⁵ = 3 N.','Rubrik: konversi luas [1], F = P·A [1], hasil 3 N [1].'],
+   ['d. Jelaskan mengapa dinding bendungan dibuat lebih tebal pada bagian dasar.','Tekanan hidrostatis bertambah seiring kedalaman, sehingga dasar bendungan menerima tekanan terbesar. Dinding yang lebih tebal pada dasar diperlukan agar kuat menahan tekanan tersebut.','Rubrik: tekanan bertambah dengan kedalaman [1], dasar menerima tekanan terbesar sehingga perlu lebih kuat [1].']
+  ]},
+ {t:'Kasus 3. Dongkrak di bengkel',s:'Di sebuah bengkel, seorang montir mengangkat mobil bermassa 1.200 kg dengan dongkrak hidrolik. Luas pengisap kecil 20 cm² dan luas pengisap besar 800 cm². Zat cair di dalam dongkrak dianggap tidak dapat dimampatkan dan g = 10 m/s².',
+  qs:[
+   ['a. Hitung berat mobil dan perbandingan luas pengisap besar terhadap pengisap kecil.','Berat mobil = 1.200 × 10 = 12.000 N. Perbandingan luas = 800/20 = 40.','Rubrik: berat 12.000 N [1], perbandingan 40 [1].'],
+   ['b. Hitung gaya minimum yang harus diberikan montir pada pengisap kecil.','Dari F₁/A₁ = F₂/A₂ diperoleh F₁ = 12.000 × 20/800 = 300 N.','Rubrik: rumus Pascal [1], hasil 300 N [1].'],
+   ['c. Jika pengisap kecil ditekan turun sejauh 40 cm, hitung kenaikan pengisap besar.','Volume zat cair yang berpindah sama: A₁ × d₁ = A₂ × d₂. d₂ = 20 × 40/800 = 1 cm.','Rubrik: konsep volume yang sama [1], hasil 1 cm [1].'],
+   ['d. Bandingkan usaha pada pengisap kecil dan pengisap besar, lalu simpulkan apakah dongkrak menghemat energi.','Usaha kecil = 300 N × 0,4 m = 120 J. Usaha besar = 12.000 N × 0,01 m = 120 J. Usaha sama sehingga dongkrak hanya melipatgandakan gaya, bukan menghemat energi.','Rubrik: dua perhitungan usaha [1], kesimpulan energi tidak bertambah [1].']
+  ]},
+ {t:'Kasus 4. Batu dan kapal baja',s:'Dina menimbang sebuah batu dengan neraca pegas. Di udara neraca menunjukkan 12 N, dan ketika batu dicelupkan seluruhnya ke dalam air, neraca menunjukkan 8 N. Dina kemudian bertanya mengapa batu itu tenggelam padahal kapal baja yang jauh lebih berat dapat terapung. Massa jenis air 1.000 kg/m³ dan g = 10 m/s².',
+  qs:[
+   ['a. Hitung gaya apung yang dialami batu.','F_A = berat di udara − berat di air = 12 − 8 = 4 N.','Rubrik: pengurangan berat [1], hasil 4 N [1].'],
+   ['b. Hitung volume batu.','F_A = ρ·g·V → V = 4/(1.000 × 10) = 4 × 10⁻⁴ m³ = 400 cm³.','Rubrik: rumus gaya apung [1], hasil V [1].'],
+   ['c. Hitung massa jenis batu dan tentukan keadaannya di air.','Massa batu = 12/10 = 1,2 kg. ρ = m/V = 1,2/(4 × 10⁻⁴) = 3.000 kg/m³. Karena 3.000 > 1.000, batu tenggelam.','Rubrik: massa [1], massa jenis [1], kesimpulan tenggelam dengan alasan [1].'],
+   ['d. Jelaskan mengapa kapal baja dapat terapung padahal baja bermassa jenis lebih besar daripada air.','Badan kapal berongga sehingga volume air yang dipindahkan besar. Massa jenis rata-rata kapal (baja dan udara di dalamnya) lebih kecil daripada massa jenis air, dan gaya apung dapat mengimbangi berat kapal.','Rubrik: rongga atau volume besar [1], massa jenis rata-rata lebih kecil [1], gaya apung seimbang dengan berat [1].']
+  ]},
+ {t:'Kasus 5. Kantong keripik di puncak',s:'Sekelompok siswa membawa kantong keripik tertutup rapat dari kaki gunung (tekanan udara 76 cmHg) ke puncak yang tingginya 2.000 m. Di puncak mereka melihat kantong menggembung. Volume udara di dalam kantong saat di kaki gunung adalah 100 mL. Anggap suhu tetap dan tekanan udara turun 1 cmHg setiap naik 100 m.',
+  qs:[
+   ['a. Hitung tekanan udara di puncak.','Penurunan = 2.000/100 = 20 cmHg. Tekanan di puncak = 76 − 20 = 56 cmHg.','Rubrik: penurunan 20 cmHg [1], hasil 56 cmHg [1].'],
+   ['b. Jelaskan mengapa kantong menggembung.','Tekanan udara di luar kantong berkurang, sedangkan kantong tertutup dan jumlah gas di dalamnya tetap. Tekanan di dalam lebih besar daripada di luar sehingga gas memuai dan kantong menggembung.','Rubrik: tekanan luar menurun [1], tekanan dalam relatif lebih besar [1], gas memuai [1].'],
+   ['c. Hitung perkiraan volume udara di dalam kantong di puncak dengan hukum Boyle.','P₁V₁ = P₂V₂ → 76 × 100 = 56 × V₂ → V₂ = 7.600/56 ≈ 136 mL.','Rubrik: rumus Boyle [1], substitusi benar [1], hasil ± 136 mL [1].'],
+   ['d. Jelaskan mengapa air mendidih pada suhu yang lebih rendah di puncak gunung.','Pada tekanan udara yang lebih rendah, uap air lebih mudah terbentuk dan melawan tekanan luar yang kecil, sehingga air mendidih pada suhu di bawah 100 °C.','Rubrik: tekanan udara lebih rendah di ketinggian [1], titik didih lebih rendah [1].']
+  ]}
+];
+var st=document.getElementById('stories');
+S.forEach(function(c,ci){
+  var d=document.createElement('div');d.className='card';
+  var h='<h3 style="margin-top:0">'+c.t+'</h3><p>'+c.s+'</p>';
+  c.qs.forEach(function(x,qi){
+    var id='s'+ci+'_'+qi;
+    h+='<p style="margin-top:16px"><b>'+x[0]+'</b></p><textarea id="ta'+id+'" placeholder="Tulis jawabanmu di sini"></textarea>'+
+       '<button class="btn" type="button" data-k="'+id+'" style="margin-top:6px">Lihat kunci dan rubrik</button><div class="key" id="k'+id+'" hidden><b>Kunci:</b> '+x[1]+'<br><span style="color:var(--muted)">'+x[2]+'</span></div>';
+  });
+  d.innerHTML=h;st.appendChild(d);
+});
+st.addEventListener('click',function(e){var b=e.target.closest('button[data-k]');if(!b)return;var k=document.getElementById('k'+b.dataset.k);k.hidden=!k.hidden;b.textContent=k.hidden?'Lihat kunci dan rubrik':'Sembunyikan kunci'});
+</script>
+
+</body></html>
