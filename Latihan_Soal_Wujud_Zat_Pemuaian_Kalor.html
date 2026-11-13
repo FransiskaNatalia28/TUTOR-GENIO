@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>Latihan Soal — Wujud Zat, Pemuaian, dan Kalor</title>
+<style>
+:root{--pri:#3b5bdb;--pri2:#5c7cfa;--acc:#f59f00;--ok:#2b8a3e;--bad:#c92a2a;--bg:#f3f5fb;--card:#fff;--tx:#1e2433;--mut:#5f6b85;--bd:#dfe4f0;--r:14px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--tx);line-height:1.65;font-size:16px}
+h1,h2,h3,h4{line-height:1.25;margin:1.2em 0 .5em}
+h2{font-size:1.6rem;color:var(--pri)}
+h3{font-size:1.25rem}
+h4{font-size:1.05rem}
+p{margin:.5em 0}
+.top{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:16px;padding:8px 16px;flex-wrap:wrap}
+.brand{display:flex;flex-direction:column;line-height:1.15;font-size:1.05rem}
+.brand small{color:var(--mut);font-size:.72rem}
+#nav{display:flex;gap:6px;overflow-x:auto;flex:1;padding-bottom:2px}
+#nav button,.chtabs button{border:0;background:#eef1fb;color:var(--tx);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600;font-size:.9rem;white-space:nowrap}
+#nav button.on,.chtabs button.on{background:var(--pri);color:#fff}
+#nav button:hover:not(.on),.chtabs button:hover:not(.on){background:#dbe4ff}
+main{max-width:1000px;margin:0 auto;padding:16px}
+.view{display:none}.view.on{display:block}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:var(--r);padding:18px 20px;margin:14px 0;box-shadow:0 1px 3px rgba(30,36,51,.05)}
+.hero{background:linear-gradient(135deg,#3b5bdb,#7048e8 60%,#f59f00);color:#fff;border-radius:20px;padding:34px 28px;margin:6px 0 14px}
+.hero h1{margin:0 0 8px;font-size:2rem}
+.hero p{margin:4px 0;max-width:680px;opacity:.95}
+.btn{display:inline-block;border:0;background:var(--pri);color:#fff;padding:10px 18px;border-radius:10px;font-weight:700;cursor:pointer;font-size:.95rem}
+.btn:hover{background:#2f4bc2}
+.btn.sec{background:#eef1fb;color:var(--pri)}
+.btn.warn{background:var(--acc);color:#3b2a00}
+.btn.red{background:var(--bad)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.grid .card{margin:0}
+.tile h4{margin:.2em 0}
+.tile .ic{font-size:1.8rem}
+.chtabs{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 10px}
+.chapter{display:none}.chapter.on{display:block}
+table{border-collapse:collapse;width:100%;margin:10px 0;font-size:.93rem;background:#fff}
+th,td{border:1px solid var(--bd);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:#eef1fb}
+.tw{overflow-x:auto}
+.formula{background:#fff9db;border-left:5px solid var(--acc);padding:10px 14px;border-radius:8px;margin:10px 0;font-size:1.05rem}
+.note{background:#e7f5ff;border-left:5px solid #228be6;padding:10px 14px;border-radius:8px;margin:10px 0}
+.warnbox{background:#fff0f0;border-left:5px solid var(--bad);padding:10px 14px;border-radius:8px;margin:10px 0}
+.good{background:#ebfbee;border-left:5px solid var(--ok);padding:10px 14px;border-radius:8px;margin:10px 0}
+.sim{background:#f8f9ff;border:2px dashed var(--pri2);border-radius:var(--r);padding:14px 16px;margin:14px 0}
+.sim h4{margin-top:0;color:var(--pri)}
+.ctrl{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin:8px 0}
+.ctrl label{font-weight:600;min-width:130px}
+.ctrl input[type=range]{flex:1;min-width:160px}
+input[type=number],select{padding:7px 9px;border:1px solid #b8c1dc;border-radius:8px;font-size:.95rem;background:#fff;max-width:100%}
+canvas{width:100%;height:auto;background:#fff;border:1px solid var(--bd);border-radius:10px;display:block}
+.out{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin-top:8px}
+.out b{color:var(--pri)}
+.diag{width:100%;height:auto;background:#fff;border:1px solid var(--bd);border-radius:10px}
+.figsvg{width:100%;height:auto;max-width:560px;display:block;margin:0 auto}
+.figbox{background:#fff;border:1px solid var(--bd);border-radius:12px;padding:8px;margin:10px 0}
+.stim{background:#f6f8ff;border:1px solid var(--bd);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:.97rem}
+.infog{background:linear-gradient(160deg,#1fa2c9,#a7e06b 60%,#f6e05e);border-radius:14px;padding:14px;max-width:520px;margin:0 auto}
+.infog-title{background:#59c36a;color:#fff;font-weight:800;letter-spacing:.15em;text-align:center;padding:10px;border-radius:12px;margin-bottom:10px}
+.infog-step{display:flex;gap:10px;align-items:center;background:rgba(255,255,255,.88);border-radius:10px;padding:8px 10px;margin:6px 0;font-size:.93rem}
+.infog-n{background:#364fc7;color:#fff;border-radius:50%;min-width:26px;height:26px;display:flex;align-items:center;justify-content:center;font-weight:800}
+.infog-i{font-size:1.4rem}
+details{background:#f8f9ff;border:1px solid var(--bd);border-radius:10px;padding:8px 12px;margin:8px 0}
+summary{cursor:pointer;font-weight:700;color:var(--pri)}
+.ex h4{margin:0 0 6px}
+.tag{display:inline-block;background:#e7ecff;color:var(--pri);border-radius:999px;padding:2px 10px;font-size:.78rem;font-weight:700;margin-right:6px}
+.tag.hot{background:#fff0d6;color:#a35c00}
+.qbar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid var(--bd);border-radius:12px;padding:10px 14px;position:sticky;top:58px;z-index:20}
+.timer{font-size:1.15rem;display:flex;gap:6px;align-items:center;padding:4px 12px;border-radius:999px;background:#e7ecff}
+.timer.warn{background:#ffe3e3;color:var(--bad);animation:bl 1s infinite}
+@keyframes bl{50%{opacity:.55}}
+.qnav{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.qnav button{width:36px;height:36px;border-radius:8px;border:2px solid var(--bd);background:#fff;font-weight:700;cursor:pointer}
+.qnav button.ans{background:#d0ebff;border-color:#74c0fc}
+.qnav button.flag{background:#fff3bf;border-color:var(--acc)}
+.qnav button.cur{outline:3px solid var(--pri)}
+.qtext{font-size:1.04rem;margin:10px 0;font-weight:600}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opts.fig{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border:2px solid var(--bd);border-radius:12px;cursor:pointer;background:#fff}
+.opt:hover{border-color:var(--pri2)}
+.opt .l{background:#eef1fb;border-radius:50%;min-width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-weight:800;color:var(--pri)}
+.opt.sel{border-color:var(--pri);background:#edf2ff}
+.opt.sel .l{background:var(--pri);color:#fff}
+.opt.key{border-color:var(--ok);background:#ebfbee;cursor:default}
+.opt.key .l{background:var(--ok);color:#fff}
+.opt.wrong{border-color:var(--bad);background:#fff5f5;cursor:default}
+.opt.wrong .l{background:var(--bad);color:#fff}
+.opt.neutral{cursor:default}
+.opt .bd{display:block;font-size:.76rem;font-weight:700;margin-top:3px}
+.ctl{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;justify-content:space-between}
+.ctl>div{display:flex;gap:8px;flex-wrap:wrap}
+.score{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.ring{width:130px;height:130px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-direction:column;background:conic-gradient(var(--pri) var(--p),#e7ecff 0);position:relative}
+.ring::before{content:"";position:absolute;inset:12px;background:#fff;border-radius:50%}
+.ring *{position:relative}
+.ring b{font-size:1.9rem;line-height:1}
+.stat{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;flex:1}
+.stat div{background:#f6f8ff;border:1px solid var(--bd);border-radius:10px;padding:8px;text-align:center}
+.stat b{display:block;font-size:1.3rem}
+.bar{height:10px;background:#e7ecff;border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:var(--pri)}
+.rv{border-left:5px solid var(--bd)}
+.rv.ok{border-left-color:var(--ok)}.rv.no{border-left-color:var(--bad)}.rv.bl{border-left-color:#868e96}
+.exp{background:#f4fce3;border:1px solid #d8f5a2;border-radius:10px;padding:10px 14px;margin-top:10px}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.chips button{border:2px solid var(--bd);background:#fff;border-radius:999px;padding:5px 12px;cursor:pointer;font-weight:600}
+.chips button.on{border-color:var(--pri);background:#edf2ff;color:var(--pri)}
+.modal{position:fixed;inset:0;background:rgba(20,25,40,.55);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px}
+.modal>div{background:#fff;border-radius:16px;padding:22px;max-width:420px;width:100%}
+.rodwrap{background:#fff;border:1px solid var(--bd);border-radius:10px;padding:14px;overflow:hidden}
+.rod{height:26px;background:linear-gradient(#adb5bd,#868e96);border-radius:4px;display:inline-block;vertical-align:middle}
+.rodext{height:26px;background:linear-gradient(#ff8787,#e03131);border-radius:0 4px 4px 0;display:inline-block;vertical-align:middle}
+ul,ol{padding-left:1.3em;margin:.4em 0}
+li{margin:.2em 0}
+footer{text-align:center;color:var(--mut);font-size:.82rem;padding:20px}
+@media(max-width:600px){.hero h1{font-size:1.5rem}main{padding:10px}.card{padding:14px}.qbar{top:96px}}
+</style>
+</head>
+<body>
+<header class="top">
+<div class="brand"><b>⚗️ IPA Interaktif</b><small>Wujud Zat · Pemuaian · Kalor</small></div>
+<nav id="nav"><button class="on" data-view="latihanA">Latihan Singkat</button><button data-view="latihanB">Latihan TKA</button><button data-view="pembahasan">Pembahasan</button></nav>
+</header>
+<main>
+<!-- ================= BERANDA ================= -->
+
+<!-- ================= MATERI ================= -->
+
+<!-- ================= CONTOH ================= -->
+
+<!-- ================= LATIHAN ================= -->
+<section class="view on" id="v-latihanA"><div id="quiz-A"></div></section>
+<section class="view" id="v-latihanB"><div id="quiz-B"></div></section>
+<!-- ================= PEMBAHASAN ================= -->
+<section class="view" id="v-pembahasan"><div id="reviewBox"></div></section>
+</main>
+<footer>Materi IPA Interaktif · Wujud Zat, Pemuaian, dan Kalor · File ini dapat dibuka tanpa internet.</footer>
+<div id="modalRoot"></div>
+<script>
+/* ===== Bank soal & gambar: Wujud Zat, Pemuaian, Kalor ===== */
+const SV=(inner,vb)=>`<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" class="figsvg" font-family="system-ui,Arial,sans-serif">${inner}</svg>`;
+
+function figLilin(){
+ const s=[['🔥','Malam padat dipanaskan di wajan kecil hingga meleleh'],['🖌️','Malam cair diambil dengan canting lalu digoreskan pada kain'],['🌡️','Malam pada kain mengalami penurunan suhu'],['🧵','Malam membeku dan menempel kuat pada serat kain']];
+ return `<div class="infog"><div class="infog-title">PROSES BATIK TULIS</div>`+s.map((x,i)=>`<div class="infog-step"><span class="infog-n">${i+1}</span><span class="infog-i">${x[0]}</span><span>${x[1]}</span></div>`).join('')+`</div>`;
+}
+
+function figDestilasi(){return SV(`
+<rect width="640" height="350" fill="#fff"/>
+<rect x="20" y="300" width="600" height="14" fill="#cfd8dc"/>
+<rect x="95" y="262" width="50" height="34" rx="4" fill="#78909c"/>
+<path d="M120 236 C108 252 112 258 120 262 C128 258 132 252 120 236Z" fill="#ff8f00"/>
+<circle cx="120" cy="185" r="50" fill="#e3f2fd" stroke="#37474f" stroke-width="2.5"/>
+<path d="M70 185 A50 50 0 0 0 170 185Z" fill="#81d4fa"/>
+<circle cx="100" cy="205" r="4" fill="#fff"/><circle cx="125" cy="215" r="5" fill="#fff"/><circle cx="140" cy="198" r="3" fill="#fff"/>
+<rect x="107" y="95" width="26" height="45" fill="#e3f2fd" stroke="#37474f" stroke-width="2.5"/>
+<rect x="103" y="86" width="34" height="12" rx="3" fill="#8d6e63"/>
+<rect x="116" y="55" width="8" height="125" fill="#fff" stroke="#37474f"/>
+<rect x="118" y="130" width="4" height="50" fill="#e53935"/>
+<text x="132" y="62" font-size="13" fill="#222">Termometer</text>
+<path d="M133 112 L228 150" stroke="#37474f" stroke-width="12" fill="none"/>
+<path d="M133 112 L228 150" stroke="#e3f2fd" stroke-width="7" fill="none"/>
+<text x="150" y="100" font-size="12" fill="#c92a2a">uap air</text>
+<g transform="rotate(17 228 150)"><rect x="228" y="135" width="250" height="32" rx="6" fill="#bbdefb" stroke="#37474f" stroke-width="2.5"/><rect x="228" y="146" width="250" height="10" fill="#fff" stroke="#90a4ae"/></g>
+<text x="350" y="160" font-size="13" fill="#222" font-weight="700">kondensor</text>
+<line x1="426" y1="232" x2="426" y2="265" stroke="#1c7ed6" stroke-width="3"/><polygon points="426,228 420,240 432,240" fill="#1c7ed6"/>
+<text x="426" y="282" font-size="12" fill="#1864ab" text-anchor="middle">air pendingin</text><text x="426" y="296" font-size="12" fill="#1864ab" text-anchor="middle">masuk</text>
+<line x1="273" y1="148" x2="273" y2="118" stroke="#1c7ed6" stroke-width="3"/><polygon points="273,112 267,124 279,124" fill="#1c7ed6"/>
+<text x="285" y="112" font-size="12" fill="#1864ab">air pendingin keluar</text>
+<path d="M462 226 L505 245 L505 262" stroke="#37474f" stroke-width="8" fill="none"/>
+<path d="M462 226 L505 245 L505 262" stroke="#e3f2fd" stroke-width="4" fill="none"/>
+<circle cx="505" cy="270" r="3" fill="#29b6f6"/>
+<path d="M493 255 L493 275 L470 300 L540 300 L517 275 L517 255Z" fill="#fff" stroke="#37474f" stroke-width="2.5"/>
+<path d="M481 288 L529 288 L540 300 L470 300Z" fill="#81d4fa"/>
+<text x="548" y="292" font-size="13" fill="#222">Distilat</text>
+<text x="64" y="188" font-size="12" fill="#222" text-anchor="end">Labu</text><text x="64" y="202" font-size="12" fill="#222" text-anchor="end">destilasi</text>
+<text x="120" y="332" font-size="12" fill="#222" text-anchor="middle">Pembakar</text>
+<text x="120" y="190" font-size="12" fill="#0d47a1" text-anchor="middle">air laut</text>
+`,'0 0 640 350');}
+
+function figTangki(){return SV(`
+<rect width="520" height="260" fill="#fff"/>
+<circle cx="455" cy="42" r="20" fill="#ffb300"/>
+<g stroke="#ffb300" stroke-width="3"><line x1="455" y1="8" x2="455" y2="16"/><line x1="455" y1="68" x2="455" y2="76"/><line x1="421" y1="42" x2="429" y2="42"/><line x1="481" y1="42" x2="489" y2="42"/><line x1="431" y1="18" x2="437" y2="24"/><line x1="473" y1="60" x2="479" y2="66"/><line x1="479" y1="18" x2="473" y2="24"/><line x1="437" y1="60" x2="431" y2="66"/></g>
+<rect x="90" y="75" width="300" height="145" rx="18" fill="#eceff1" stroke="#37474f" stroke-width="3"/>
+<path d="M93 112 H387 V204 Q387 217 374 217 H106 Q93 217 93 204Z" fill="#ffb74d"/>
+<rect x="225" y="56" width="30" height="19" fill="#90a4ae" stroke="#37474f"/>
+<text x="240" y="48" font-size="12" text-anchor="middle" fill="#222">lubang pernapasan (vent)</text>
+<text x="240" y="98" font-size="13" text-anchor="middle" fill="#222">ruang kosong 2 L (tidak digambar skala)</text>
+<text x="240" y="170" font-size="15" text-anchor="middle" fill="#5d4037" font-weight="700">Bensin 48 L</text>
+<text x="240" y="245" font-size="13" text-anchor="middle" fill="#222">Kapasitas tangki 50 L · suhu naik 30 °C → 70 °C</text>
+`,'0 0 520 260');}
+
+function figGrafik(a,b,c){
+ return SV(`<rect width="320" height="210" fill="#fff"/>
+<line x1="50" y1="15" x2="50" y2="165" stroke="#333" stroke-width="2"/>
+<line x1="50" y1="165" x2="305" y2="165" stroke="#333" stroke-width="2"/>
+<text x="6" y="14" font-size="11">Suhu (°C)</text><text x="240" y="200" font-size="11">Kalor (J)</text>
+<text x="20" y="139" font-size="11">-10</text><text x="34" y="124" font-size="11">0</text><text x="30" y="34" font-size="11">60</text>
+<line x1="50" y1="30" x2="270" y2="30" stroke="#888" stroke-dasharray="4 3"/>
+<line x1="50" y1="120" x2="190" y2="120" stroke="#888" stroke-dasharray="4 3"/>
+<line x1="95" y1="120" x2="95" y2="165" stroke="#888" stroke-dasharray="4 3"/>
+<line x1="190" y1="120" x2="190" y2="165" stroke="#888" stroke-dasharray="4 3"/>
+<line x1="270" y1="30" x2="270" y2="165" stroke="#888" stroke-dasharray="4 3"/>
+<polyline points="50,135 95,120 190,120 270,30" fill="none" stroke="#1c7ed6" stroke-width="3"/>
+<text x="95" y="180" font-size="10" text-anchor="middle">${a}</text>
+<text x="190" y="180" font-size="10" text-anchor="middle">${b}</text>
+<text x="270" y="180" font-size="10" text-anchor="middle">${c}</text>`,'0 0 320 210');}
+
+function figBeakerEs(){return SV(`<rect width="380" height="240" fill="#fff"/>
+<path d="M100 40 V205 Q100 215 110 215 H270 Q280 215 280 205 V40" fill="none" stroke="#37474f" stroke-width="3"/>
+<rect x="102" y="95" width="176" height="118" fill="#ffcc80" opacity=".75"/>
+<g fill="#e1f5fe" stroke="#4fc3f7" stroke-width="2"><rect x="130" y="82" width="34" height="34" rx="4" transform="rotate(-8 147 99)"/><rect x="172" y="86" width="34" height="34" rx="4" transform="rotate(10 189 103)"/><rect x="214" y="80" width="34" height="34" rx="4" transform="rotate(-4 231 97)"/></g>
+<text x="190" y="160" font-size="14" text-anchor="middle" fill="#5d4037" font-weight="700">Air 400 g · 60 °C</text>
+<text x="190" y="62" font-size="13" text-anchor="middle" fill="#0277bd" font-weight="700">Es 100 g · 0 °C</text>
+<text x="190" y="232" font-size="12" text-anchor="middle" fill="#222">(wadah dan kehilangan kalor diabaikan)</text>`,'0 0 380 240');}
+
+function figTermos(){
+ const n=(y,t)=>`<circle cx="270" cy="${y}" r="12" fill="#3b5bdb"/><text x="270" y="${y+5}" font-size="14" fill="#fff" text-anchor="middle" font-weight="700">${t}</text>`;
+ return SV(`<rect width="320" height="300" fill="#fff"/>
+<rect x="70" y="70" width="160" height="215" rx="22" fill="#cfd8dc" stroke="#37474f" stroke-width="3"/>
+<rect x="86" y="86" width="128" height="185" rx="14" fill="#fff" stroke="#9e9e9e" stroke-width="4"/>
+<rect x="98" y="110" width="104" height="150" rx="8" fill="#ffccbc"/>
+<rect x="92" y="40" width="116" height="40" rx="8" fill="#8d6e63" stroke="#4e342e" stroke-width="2"/>
+<g stroke="#3b5bdb" stroke-width="2"><line x1="258" y1="60" x2="208" y2="60"/><line x1="258" y1="120" x2="222" y2="120"/><line x1="258" y1="175" x2="214" y2="175"/><line x1="258" y1="230" x2="202" y2="230"/></g>
+${n(60,1)}${n(120,2)}${n(175,3)}${n(230,4)}
+<text x="150" y="190" font-size="13" text-anchor="middle" fill="#bf360c">air panas</text>`,'0 0 320 300');}
+
+function figJembatan(){return SV(`<rect width="560" height="210" fill="#fff"/>
+<circle cx="500" cy="36" r="18" fill="#ffb300"/>
+<rect x="40" y="100" width="480" height="16" fill="#607d8b"/>
+<rect x="296" y="100" width="8" height="16" fill="#fff"/>
+<rect x="120" y="116" width="26" height="70" fill="#78909c"/><rect x="414" y="116" width="26" height="70" fill="#78909c"/>
+<rect x="10" y="186" width="540" height="10" fill="#a1887f"/>
+<line x1="40" y1="82" x2="520" y2="82" stroke="#c92a2a" stroke-width="2"/><polygon points="40,82 50,77 50,87" fill="#c92a2a"/><polygon points="520,82 510,77 510,87" fill="#c92a2a"/>
+<text x="280" y="74" font-size="14" text-anchor="middle" fill="#c92a2a" font-weight="700">Panjang jembatan baja 100 m</text>
+<text x="300" y="140" font-size="12" text-anchor="middle" fill="#222">celah sambungan muai</text><line x1="300" y1="124" x2="300" y2="116" stroke="#222"/>
+<text x="40" y="30" font-size="14" fill="#222">Pagi hari: 25 °C</text><text x="40" y="50" font-size="14" fill="#222">Siang hari: 45 °C</text>
+<text x="280" y="172" font-size="12" text-anchor="middle" fill="#222">α baja = 1,1 × 10⁻⁵ /°C</text>`,'0 0 560 210');}
+
+function figBimetal(){return SV(`<rect width="560" height="240" fill="#fff"/>
+<rect x="40" y="82" width="30" height="58" fill="#90a4ae" stroke="#37474f"/>
+<rect x="70" y="95" width="330" height="14" fill="#90a4ae" stroke="#37474f"/>
+<rect x="70" y="109" width="330" height="14" fill="#ff8a65" stroke="#37474f"/>
+<rect x="385" y="136" width="28" height="14" fill="#5d4037"/>
+<text x="100" y="88" font-size="13" fill="#222">Logam Q (α = 1,2 × 10⁻⁵ /°C)</text>
+<text x="100" y="140" font-size="13" fill="#bf360c">Logam P (α = 2,0 × 10⁻⁵ /°C)</text>
+<text x="399" y="170" font-size="12" fill="#222" text-anchor="middle">titik kontak</text>
+<polyline points="120,185 135,170 150,200 165,170 180,200 195,170 210,200 225,170 240,200 255,170 270,185" fill="none" stroke="#e03131" stroke-width="3"/>
+<text x="195" y="222" font-size="12" text-anchor="middle" fill="#e03131">pemanas</text>
+<path d="M55 82 V28 H220 M244 28 H500 V190 H399 V150" fill="none" stroke="#222" stroke-width="2"/>
+<line x1="220" y1="16" x2="220" y2="40" stroke="#222" stroke-width="3"/><line x1="232" y1="22" x2="232" y2="34" stroke="#222" stroke-width="3"/><line x1="244" y1="16" x2="244" y2="40" stroke="#222" stroke-width="3"/>
+<text x="232" y="12" font-size="11" text-anchor="middle">baterai</text>
+<circle cx="440" cy="28" r="14" fill="#fff3bf" stroke="#222" stroke-width="2"/><text x="440" y="56" font-size="11" text-anchor="middle">lampu</text>
+<text x="470" y="215" font-size="11" fill="#555">Kondisi awal: kontak tertutup</text>`,'0 0 560 240');}
+
+function figAnomali(){
+ let pts=[];for(let T=0;T<=10;T+=0.5){pts.push((70+T*45).toFixed(1)+','+(170-2.2*Math.pow(T-4,2)).toFixed(1));}
+ let ticks='';for(let T=0;T<=10;T+=2){ticks+=`<text x="${70+T*45}" y="208" font-size="11" text-anchor="middle">${T}</text>`;}
+ return SV(`<rect width="560" height="230" fill="#fff"/>
+<line x1="60" y1="20" x2="60" y2="190" stroke="#333" stroke-width="2"/><line x1="60" y1="190" x2="540" y2="190" stroke="#333" stroke-width="2"/>
+<text x="8" y="16" font-size="11">Volume 1 kg air</text><text x="470" y="224" font-size="11">Suhu (°C)</text>
+<polyline points="${pts.join(' ')}" fill="none" stroke="#1c7ed6" stroke-width="3"/>
+<line x1="250" y1="170" x2="250" y2="190" stroke="#888" stroke-dasharray="4 3"/>
+<circle cx="250" cy="170" r="5" fill="#e03131"/><text x="262" y="165" font-size="12" fill="#c92a2a">volume terkecil (4 °C)</text>
+${ticks}`,'0 0 560 230');}
+
+function figGelas(){
+ const cyl=(x,lvl,stone)=>{const top=230-lvl*2;let t='';for(let m=0;m<=100;m+=20){const y=230-m*2;t+=`<line x1="${x+70}" y1="${y}" x2="${x+80}" y2="${y}" stroke="#333"/><text x="${x+84}" y="${y+4}" font-size="11">${m}</text>`;}
+  return `<rect x="${x}" y="30" width="70" height="200" fill="none" stroke="#37474f" stroke-width="3"/><rect x="${x+1.5}" y="${top}" width="67" height="${230-top-1.5}" fill="#81d4fa" opacity=".8"/>${t}`+(stone?`<ellipse cx="${x+35}" cy="214" rx="20" ry="13" fill="#757575" stroke="#424242"/>`:'')+`<text x="${x+35}" y="${top-6}" font-size="13" text-anchor="middle" fill="#0d47a1" font-weight="700">${lvl} mL</text>`;};
+ return SV(`<rect width="520" height="260" fill="#fff"/>${cyl(80,60,false)}${cyl(320,85,true)}
+<text x="115" y="252" font-size="13" text-anchor="middle">Sebelum</text><text x="355" y="252" font-size="13" text-anchor="middle">Sesudah batu dimasukkan</text>
+<text x="360" y="22" font-size="12" text-anchor="middle" fill="#222">massa batu = 62,5 g</text>`,'0 0 520 260');
+}
+
+/* ================= SET A: LATIHAN SINGKAT ================= */
+const QA=[
+{topic:'Wujud Zat',q:'Zat yang bentuknya berubah mengikuti wadah tetapi volumenya tetap adalah ....',o:['Zat gas','Zat padat','Zat cair','Semua wujud zat'],a:2,e:'Zat cair: <b>bentuk mengikuti wadah, volume tetap</b>. Zat padat memiliki bentuk dan volume tetap, sedangkan gas bentuk dan volumenya mengikuti wadah.'},
+{topic:'Perubahan Wujud',q:'Perubahan wujud berikut yang melepaskan kalor adalah ....',o:['Mencair','Mengembun','Menguap','Menyublim'],a:1,e:'Perubahan wujud yang <b>melepas kalor</b>: membeku, mengembun, dan mengkristal. Mencair, menguap, dan menyublim <b>menyerap</b> kalor. Jadi jawabannya mengembun.'},
+{topic:'Perubahan Wujud',q:'Kapur barus di dalam lemari lama-kelamaan mengecil dan akhirnya habis tanpa melalui wujud cair. Peristiwa ini disebut ....',o:['Menguap','Mengkristal','Mengembun','Menyublim'],a:3,e:'Perubahan langsung dari <b>padat menjadi gas</b> tanpa melalui wujud cair disebut menyublim.'},
+{topic:'Massa Jenis',q:'Sebuah balok berukuran 20 cm × 10 cm × 5 cm memiliki massa 2,5 kg. Massa jenis balok tersebut adalah ....',o:['2,5 g/cm<sup>3</sup>','0,25 g/cm<sup>3</sup>','25 g/cm<sup>3</sup>','250 g/cm<sup>3</sup>'],a:0,e:'V = 20 × 10 × 5 = 1.000 cm<sup>3</sup>; m = 2,5 kg = 2.500 g.<br>ρ = m/V = 2.500 / 1.000 = <b>2,5 g/cm<sup>3</sup></b> (= 2.500 kg/m<sup>3</sup>).'},
+{topic:'Massa Jenis',q:'Suatu benda bermassa jenis 800 kg/m<sup>3</sup> memiliki volume 0,25 m<sup>3</sup>. Massa benda tersebut adalah ....',o:['2.000 kg','200 kg','3.200 kg','20 kg'],a:1,e:'m = ρ × V = 800 × 0,25 = <b>200 kg</b>.'},
+{topic:'Sifat Zat Cair',q:'Permukaan raksa di dalam pipa kaca berbentuk cembung karena ....',o:['Adhesi lebih besar daripada kohesi','Adhesi sama dengan kohesi','Kohesi lebih besar daripada adhesi','Adhesi dan kohesi sama-sama nol'],a:2,e:'Meniskus cembung terjadi bila <b>kohesi &gt; adhesi</b> (raksa dengan kaca). Meniskus cekung terjadi bila adhesi &gt; kohesi (air dengan kaca).'},
+{topic:'Sifat Zat Cair',q:'Peristiwa yang merupakan contoh gejala kapilaritas adalah ....',o:['Nyamuk dapat hinggap di permukaan air','Jarum dapat mengapung di permukaan air','Tetes embun pada daun berbentuk bulat','Air naik pada kain yang ujungnya dicelupkan'],a:3,e:'Kapilaritas adalah naiknya zat cair pada pipa sempit/serat. Air naik pada kain adalah kapilaritas. Tiga opsi lain adalah contoh <b>tegangan permukaan</b>.'},
+{topic:'Pemuaian',q:'Batang besi sepanjang 2 m (α = 1,2 × 10<sup>-5</sup> /°C) dipanaskan dari 20 °C menjadi 120 °C. Pertambahan panjang batang adalah ....',o:['2,4 mm','0,24 mm','24 mm','240 mm'],a:0,e:'ΔL = L<sub>0</sub> α ΔT = 2 × 1,2×10<sup>-5</sup> × 100 = 2,4×10<sup>-3</sup> m = <b>2,4 mm</b>.'},
+{topic:'Pemuaian',q:'Keping bimetal terdiri atas kuningan (α = 19 × 10<sup>-6</sup> /°C) dan besi (α = 12 × 10<sup>-6</sup> /°C). Jika dipanaskan, keping akan melengkung ke arah logam ....',o:['Kuningan','Tetap lurus','Besi','Bergetar'],a:2,e:'Kuningan memuai lebih panjang sehingga berada di sisi luar lengkungan. Bimetal melengkung ke arah logam dengan α <b>lebih kecil</b>, yaitu <b>besi</b>.'},
+{topic:'Pemuaian',q:'Air memiliki massa jenis terbesar (volume terkecil) pada suhu ....',o:['4 °C','0 °C','10 °C','100 °C'],a:0,e:'Anomali air: volume terkecil dan massa jenis terbesar terjadi pada <b>4 °C</b>.'},
+{topic:'Pemuaian',q:'Urutan pemuaian dari yang terbesar untuk kenaikan suhu yang sama adalah ....',o:['Padat &gt; cair &gt; gas','Gas &gt; cair &gt; padat','Cair &gt; gas &gt; padat','Gas &gt; padat &gt; cair'],a:1,e:'Pemuaian gas paling besar, kemudian zat cair, lalu zat padat.'},
+{topic:'Kalor',q:'Sebanyak 2 kg air (c = 4.200 J/kg°C) dipanaskan dari 20 °C menjadi 70 °C. Kalor yang diperlukan adalah ....',o:['168 kJ','294 kJ','420 kJ','588 kJ'],a:2,e:'Q = m c ΔT = 2 × 4.200 × (70 − 20) = 2 × 4.200 × 50 = 420.000 J = <b>420 kJ</b>.'},
+{topic:'Kalor',q:'Es 0,5 kg bersuhu 0 °C melebur seluruhnya menjadi air 0 °C (kalor lebur es 334.000 J/kg). Kalor yang diperlukan adalah ....',o:['167 kJ','16,7 kJ','334 kJ','1.670 kJ'],a:0,e:'Q = m L = 0,5 × 334.000 = 167.000 J = <b>167 kJ</b>.'},
+{topic:'Asas Black',q:'Sebanyak 200 g air bersuhu 100 °C dicampur dengan 300 g air bersuhu 20 °C. Jika tidak ada kalor yang hilang, suhu campuran adalah ....',o:['40 °C','52 °C','60 °C','68 °C'],a:1,e:'T<sub>c</sub> = (200×100 + 300×20)/(200+300) = (20.000 + 6.000)/500 = <b>52 °C</b>. (Bukan rata-rata biasa karena massanya berbeda.)'},
+{topic:'Perpindahan Kalor',q:'Panas matahari dapat sampai ke bumi melalui ruang hampa udara dengan cara ....',o:['Konduksi','Konveksi','Radiasi','Konduksi dan konveksi'],a:2,e:'Di ruang hampa tidak ada medium; kalor berpindah secara <b>radiasi</b>.'},
+{topic:'Suhu',q:'Suhu suatu benda 77 °F. Jika dinyatakan dalam skala Celsius, suhu benda tersebut adalah ....',o:['20 °C','25 °C','30 °C','35 °C'],a:1,e:'C = (F − 32) × 5/9 = (77 − 32) × 5/9 = 45 × 5/9 = <b>25 °C</b>.'}
+];
+
+/* ================= SET B: LATIHAN TKA (HOTS) ================= */
+const QB=[
+{topic:'Wujud Zat',lvl:'HOTS',
+ stim:'<b>Batik Tulis.</b> Bu Rina membuat batik tulis. Ia mencari tahu proses penggunaan malam (lilin batik) dan menemukan infografik berikut. Ia kemudian menganalisis karakteristik partikel malam selama proses berlangsung.',
+ fig:figLilin(),
+ q:'Berikut hasil analisis Bu Rina:<br>1) Pada proses 1, malam menyerap kalor sehingga partikelnya bergerak lebih bebas, namun masih terbatas.<br>2) Jarak antarpartikel malam pada proses 2 lebih rapat dibandingkan pada proses 4.<br>3) Pada proses 3, gaya tarik antarpartikel malam semakin menguat.<br>4) Proses 4 menyebabkan malam menyerap kalor dari lingkungan.<br><br>Analisis yang tepat terdapat pada pernyataan ....',
+ o:['1) dan 2)','1) dan 3)','2) dan 4)','3) dan 4)'],a:1,
+ e:'<b>1) Benar</b> — meleleh menyerap kalor; partikel cair bergerak lebih bebas tetapi masih berdekatan.<br><b>2) Salah</b> — proses 2 berwujud cair (renggang) sedangkan proses 4 padat (rapat), jadi jarak pada proses 2 <i>lebih renggang</i>.<br><b>3) Benar</b> — suhu turun, energi gerak partikel berkurang, gaya tarik makin dominan.<br><b>4) Salah</b> — membeku <b>melepas</b> kalor.<br>Pernyataan yang tepat: <b>1) dan 3)</b>.'},
+{topic:'Perubahan Wujud',lvl:'HOTS',
+ stim:'<b>Distilasi Air Laut.</b> Sekelompok siswa memisahkan air tawar dari air laut dengan distilasi sederhana. Prinsip distilasi adalah pemisahan campuran berdasarkan perbedaan titik didih. Air laut dipanaskan, uap yang terbentuk dialirkan melalui kondensor yang didinginkan air, dan tetesan cairan ditampung sebagai distilat.',
+ fig:figDestilasi(),
+ q:'Berdasarkan teks dan skema, pernyataan yang tepat untuk proses tersebut adalah ....',
+ o:['Uap air melepaskan kalor ke air pendingin di kondensor sehingga mengembun dan menjadi distilat berupa air tawar.','Garam menguap lebih dahulu karena titik didihnya lebih rendah daripada air sehingga distilat berupa garam.','Seluruh komponen air laut menguap bersama-sama sehingga distilat berupa air asin.','Air pendingin harus bersuhu lebih tinggi daripada titik didih air agar uap mudah mengembun.'],a:0,
+ e:'Garam memiliki titik didih jauh di atas air sehingga <b>tertinggal</b> di labu. Air menguap (menyerap kalor), uap melewati kondensor dan <b>melepas kalor ke air pendingin</b> sehingga <b>mengembun</b> menjadi distilat berupa air tawar. Pengembunan membutuhkan pendingin yang <i>lebih dingin</i> dari uap.'},
+{topic:'Pemuaian',lvl:'HOTS',
+ stim:'<b>Mengapa tangki bensin tidak diisi penuh?</b> Bensin memuai jauh lebih besar daripada logam tangkinya. Karena itu, tangki dirancang dengan ruang kosong (expansion space) di bagian atas dan lubang pernapasan (vent) agar tekanan tidak naik berlebihan.',
+ fig:figTangki(),
+ q:'Sebuah tangki berkapasitas 50 liter diisi bensin 48 liter pada suhu 30 °C. Koefisien muai volume bensin 9,6 × 10<sup>-4</sup> /°C dan koefisien muai volume tangki logam 1,2 × 10<sup>-4</sup> /°C. Jika suhu naik menjadi 70 °C, kondisi bensin pada suhu tersebut adalah ....',
+ o:['Bensin meluap 0,40 liter','Bensin tidak meluap dan ruang kosong tetap 2,00 liter','Bensin meluap 1,84 liter','Bensin tidak meluap dan tersisa ruang kosong ±0,40 liter'],a:3,
+ e:'ΔT = 70 − 30 = 40 °C.<br>ΔV<sub>bensin</sub> = 48 × 9,6×10<sup>-4</sup> × 40 = 1,8432 L → V akhir = 49,8432 L.<br>ΔV<sub>tangki</sub> = 50 × 1,2×10<sup>-4</sup> × 40 = 0,24 L → V akhir = 50,24 L.<br>Karena 49,8432 L &lt; 50,24 L maka <b>tidak meluap</b>; ruang kosong = 50,24 − 49,8432 ≈ <b>0,40 L</b>.<br>Opsi "meluap 0,40 L" salah karena tanda selisihnya terbalik.'},
+{topic:'Kalor',lvl:'HOTS',
+ stim:'<b>Kemana Es Ku?</b> Kalor adalah energi panas yang berpindah karena perbedaan suhu. Ketika suatu zat mengalami perubahan wujud, kalor yang diberikan tidak menaikkan suhu, tetapi dipakai untuk mengubah wujud: Q = m·L. Sebongkah es bermassa 200 gram pada suhu −10 °C dipanaskan hingga menjadi air bersuhu 60 °C. Diketahui kalor jenis es 2.100 J/kg°C, kalor lebur es 334 × 10<sup>3</sup> J/kg, dan kalor jenis air 4.200 J/kg°C.',
+ q:'Grafik pemanasan es yang benar ditunjukkan oleh ....',
+ optFig:true,
+ o:[figGrafik('8.400','75.200','125.600'),figGrafik('4.200','66.800','117.200'),figGrafik('4.200','71.000','121.400'),figGrafik('4.200','71.000','96.200')],a:2,
+ e:'<b>Tahap 1</b> (es −10 → 0 °C): Q<sub>1</sub> = 0,2 × 2.100 × 10 = 4.200 J → kumulatif <b>4.200 J</b>.<br><b>Tahap 2</b> (melebur, suhu tetap 0 °C): Q<sub>2</sub> = 0,2 × 334.000 = 66.800 J → kumulatif 4.200 + 66.800 = <b>71.000 J</b>.<br><b>Tahap 3</b> (air 0 → 60 °C): Q<sub>3</sub> = 0,2 × 4.200 × 60 = 50.400 J → kumulatif 71.000 + 50.400 = <b>121.400 J</b>.<br>Jadi grafik C. Opsi A memakai c air untuk es (8.400), opsi B lupa menjumlahkan kumulatif, opsi D memakai c es untuk air (25.200).'},
+{topic:'Asas Black',lvl:'HOTS',
+ stim:'<b>Es Teh Dingin.</b> Dina memasukkan es batu ke dalam teh panas. Ia ingin mengetahui suhu akhir campuran jika tidak ada kalor yang hilang ke lingkungan. Kalor lebur es yang digunakan 3,36 × 10<sup>5</sup> J/kg dan kalor jenis air 4.200 J/kg°C.',
+ fig:figBeakerEs(),
+ q:'Suhu akhir campuran tersebut adalah ....',
+ o:['32 °C','28 °C','40 °C','20 °C'],a:0,
+ e:'Cek: kalor dari air panas sampai 0 °C = 0,4 × 4.200 × 60 = 100.800 J &gt; kalor melebur es (0,1 × 336.000 = 33.600 J), sehingga seluruh es melebur.<br>Q<sub>lepas</sub> = Q<sub>terima</sub>:<br>0,4 × 4.200 × (60 − T) = 0,1 × 336.000 + 0,1 × 4.200 × T<br>100.800 − 1.680T = 33.600 + 420T<br>67.200 = 2.100T → T = <b>32 °C</b>.'},
+{topic:'Asas Black',lvl:'HOTS',
+ stim:'<b>Menentukan Kalor Jenis Logam.</b> Sepotong logam bermassa 200 g dipanaskan hingga 100 °C, lalu dimasukkan ke dalam kalorimeter berisi 100 g air bersuhu 20 °C. Setelah tercapai kesetimbangan termal, suhu campuran 30 °C. Kalor jenis air 4.200 J/kg°C dan kalor yang diserap wadah diabaikan.',
+ q:'Kalor jenis logam tersebut adalah ....',
+ o:['150 J/kg°C','600 J/kg°C','420 J/kg°C','300 J/kg°C'],a:3,
+ e:'Q<sub>terima</sub> (air) = 0,1 × 4.200 × (30 − 20) = 4.200 J.<br>Q<sub>lepas</sub> (logam) = 0,2 × c × (100 − 30) = 14c.<br>14c = 4.200 → c = <b>300 J/kg°C</b>.'},
+{topic:'Perpindahan Kalor',lvl:'HOTS',
+ stim:'<b>Rahasia Termos.</b> Termos dapat mempertahankan suhu air panas dalam waktu lama karena dirancang untuk menghambat tiga cara perpindahan kalor: konduksi, konveksi, dan radiasi. Penampang termos ditunjukkan pada gambar berikut dengan bagian: (1) tutup gabus/plastik, (2) ruang hampa udara, (3) dinding kaca berlapis perak mengilap, (4) air panas.',
+ fig:figTermos(),
+ q:'Pernyataan yang tepat mengenai fungsi bagian-bagian termos adalah ....',
+ o:['Bagian 3 mengurangi kehilangan kalor secara konduksi karena perak adalah penghantar kalor yang baik.','Bagian 2 menghambat konduksi dan konveksi karena tidak ada partikel perantara, sedangkan bagian 3 memantulkan radiasi kalor.','Bagian 1 dibuat dari logam agar kalor mudah merambat dan suhu cairan stabil.','Bagian 2 dibuat hampa agar kalor berpindah secara radiasi lebih cepat.'],a:1,
+ e:'Ruang hampa (2) tidak memiliki partikel sehingga kalor <b>tidak dapat berpindah secara konduksi maupun konveksi</b>. Lapisan perak mengilap (3) adalah pemantul yang baik sehingga <b>mengurangi radiasi</b>. Tutup (1) harus berupa isolator (gabus/plastik), bukan logam.'},
+{topic:'Pemuaian',lvl:'HOTS',
+ stim:'<b>Jembatan Baja.</b> Jembatan dilengkapi sambungan muai (expansion joint) agar tidak melengkung ketika suhu berubah. Sebuah jembatan baja sepanjang 100 m dibangun pada pagi hari bersuhu 25 °C. Pada siang hari suhunya mencapai 45 °C. Koefisien muai panjang baja 1,1 × 10<sup>-5</sup> /°C.',
+ fig:figJembatan(),
+ q:'Pertambahan panjang jembatan pada siang hari adalah ....',
+ o:['2,2 cm','1,1 cm','4,4 cm','22 cm'],a:0,
+ e:'ΔT = 45 − 25 = 20 °C.<br>ΔL = L<sub>0</sub> α ΔT = 100 × 1,1×10<sup>-5</sup> × 20 = 0,022 m = <b>2,2 cm</b>.<br>Celah sambungan muai harus lebih lebar daripada nilai ini agar jembatan tidak saling menekan.'},
+{topic:'Pemuaian',lvl:'HOTS',
+ stim:'<b>Termostat Setrika.</b> Pada setrika listrik, arus diputus otomatis oleh keping bimetal saat suhu mencapai batas tertentu. Perhatikan rangkaian pada gambar: bimetal tersusun dari logam Q di atas dan logam P di bawah, dengan ujung bebas menyentuh titik kontak di bawahnya. Kondisi awal kontak tertutup dan arus mengalir.',
+ fig:figBimetal(),
+ q:'Ketika pemanas menaikkan suhu bimetal, peristiwa yang terjadi adalah ....',
+ o:['Logam Q memuai lebih panjang daripada P sehingga bimetal melengkung ke bawah dan arus tetap mengalir.','Logam P memuai lebih panjang daripada Q sehingga bimetal melengkung ke atas, kontak terbuka, dan arus listrik terputus.','Kedua logam memuai sama panjang sehingga bimetal tetap lurus dan arus terputus.','Logam P memuai lebih panjang daripada Q sehingga bimetal melengkung ke bawah dan menekan kontak lebih kuat.'],a:1,
+ e:'α<sub>P</sub> (2,0×10<sup>-5</sup>) &gt; α<sub>Q</sub> (1,2×10<sup>-5</sup>) sehingga P memuai lebih panjang. P berada di bawah, jadi P berada di sisi luar lengkungan: bimetal <b>melengkung ke atas</b> (ke arah logam dengan α lebih kecil), ujung bebas menjauhi kontak, <b>rangkaian terbuka dan arus terputus</b>.'},
+{topic:'Pemuaian',lvl:'HOTS',
+ stim:'<b>Danau yang Membeku.</b> Di daerah beriklim dingin, permukaan danau membeku pada musim dingin, tetapi ikan di dasar danau tetap hidup. Grafik berikut menunjukkan volume 1 kg air pada rentang suhu 0–10 °C.',
+ fig:figAnomali(),
+ q:'Berdasarkan grafik dan peristiwa tersebut, pernyataan yang tepat adalah ....',
+ o:['Makin rendah suhu air, makin kecil volumenya sehingga es memiliki massa jenis terbesar.','Air bersuhu 0 °C memiliki volume terkecil sehingga selalu berada di dasar danau.','Air bersuhu 4 °C bermassa jenis terbesar sehingga berada di dasar danau, sedangkan es mengapung karena massa jenisnya lebih kecil.','Air bersuhu 10 °C lebih rapat daripada air 4 °C sehingga berada di dasar danau.'],a:2,
+ e:'Volume terkecil terjadi pada <b>4 °C</b>, berarti massa jenis terbesar pada 4 °C. Air 4 °C tenggelam ke dasar, sedangkan air ≈ 0 °C dan es massa jenisnya lebih kecil sehingga berada di atas dan <b>es mengapung</b>. Karena itu ikan bertahan di dasar yang bersuhu sekitar 4 °C. Opsi 1 salah karena di bawah 4 °C volume air justru bertambah.'},
+{topic:'Kalor',lvl:'HOTS',
+ stim:'<b>Teko Listrik.</b> Sebuah teko listrik bertuliskan 500 W digunakan untuk memanaskan 1 kg air dari 20 °C hingga 60 °C. Efisiensi teko 80% (80% energi listrik menjadi kalor yang diterima air). Kalor jenis air 4.200 J/kg°C.',
+ q:'Waktu yang diperlukan untuk memanaskan air tersebut adalah ....',
+ o:['5,6 menit','8,75 menit','4,5 menit','7 menit'],a:3,
+ e:'Q = m c ΔT = 1 × 4.200 × 40 = 168.000 J.<br>Daya yang menjadi kalor = 0,8 × 500 = 400 W (400 J/s).<br>t = Q/P<sub>efektif</sub> = 168.000 / 400 = 420 s = <b>7 menit</b>.<br>Opsi 5,6 menit muncul bila efisiensi diabaikan (168.000/500 = 336 s).'},
+{topic:'Massa Jenis',lvl:'HOTS',
+ stim:'<b>Mengukur Massa Jenis Batu.</b> Dimas ingin mengetahui jenis batu yang ditemukannya. Ia menimbang batu tersebut (massa 62,5 g), lalu memasukkannya ke dalam gelas ukur berisi air seperti gambar.',
+ fig:figGelas(),
+ q:'Massa jenis batu tersebut adalah ....',
+ o:['1,5 g/cm<sup>3</sup>','2,0 g/cm<sup>3</sup>','2,5 g/cm<sup>3</sup>','3,0 g/cm<sup>3</sup>'],a:2,
+ e:'Volume batu = 85 − 60 = 25 mL = 25 cm<sup>3</sup>.<br>ρ = m/V = 62,5 / 25 = <b>2,5 g/cm<sup>3</sup></b> (= 2.500 kg/m<sup>3</sup>). Karena ρ &gt; ρ air (1 g/cm<sup>3</sup>) batu tenggelam.'}
+];
+
+/* ================= CONTOH SOAL ================= */
+const EX=[
+{t:'Massa jenis benda tak beraturan',q:'Sebuah batu bermassa 150 g dimasukkan ke gelas ukur berisi air 100 mL sehingga permukaan naik menjadi 160 mL. Tentukan massa jenis batu dalam g/cm³ dan kg/m³.',s:'V batu = 160 − 100 = 60 mL = 60 cm³.<br>ρ = m/V = 150/60 = <b>2,5 g/cm³</b> = 2,5 × 1.000 = <b>2.500 kg/m³</b>.'},
+{t:'Konversi suhu',q:'Suhu tubuh seorang anak 104 °F. Nyatakan dalam °C, K, dan °R.',s:'C = (F − 32) × 5/9 = 72 × 5/9 = <b>40 °C</b>.<br>K = 40 + 273 = <b>313 K</b>.<br>R = 4/5 × 40 = <b>32 °R</b>.'},
+{t:'Pemuaian panjang',q:'Kawat tembaga (α = 1,7 × 10⁻⁵ /°C) panjangnya 50 m pada 20 °C. Berapa panjang kawat pada suhu 60 °C?',s:'ΔT = 40 °C.<br>ΔL = 50 × 1,7×10⁻⁵ × 40 = 0,034 m = 3,4 cm.<br>L<sub>t</sub> = 50 + 0,034 = <b>50,034 m</b>.'},
+{t:'Pemuaian luas',q:'Pelat aluminium persegi sisi 1 m (α = 2,4 × 10⁻⁵ /°C) dipanaskan dari 25 °C ke 125 °C. Berapa pertambahan luasnya?',s:'β = 2α = 4,8×10⁻⁵ /°C; A<sub>0</sub> = 1 m²; ΔT = 100 °C.<br>ΔA = A<sub>0</sub> β ΔT = 1 × 4,8×10⁻⁵ × 100 = <b>4,8×10⁻³ m² = 48 cm²</b>.'},
+{t:'Zat cair yang tumpah',q:'Bejana kaca (α = 9 × 10⁻⁶ /°C) berisi penuh 500 mL alkohol (γ = 1,1 × 10⁻³ /°C) pada 20 °C. Jika dipanaskan hingga 60 °C, berapa mL alkohol yang tumpah?',s:'ΔT = 40 °C; γ kaca = 3α = 2,7×10⁻⁵.<br>ΔV alkohol = 500 × 1,1×10⁻³ × 40 = 22 mL.<br>ΔV bejana = 500 × 2,7×10⁻⁵ × 40 = 0,54 mL.<br>Tumpah = 22 − 0,54 = <b>21,46 mL</b>.'},
+{t:'Kalor dan kapasitas kalor',q:'Sebuah benda besi bermassa 3 kg (c = 450 J/kg°C). Tentukan kapasitas kalornya dan kalor yang diperlukan agar suhunya naik 40 °C.',s:'C = m c = 3 × 450 = <b>1.350 J/°C</b>.<br>Q = C ΔT = 1.350 × 40 = <b>54.000 J</b>.'},
+{t:'Kalor total es menjadi uap',q:'Berapa kalor yang diperlukan untuk mengubah 100 g es −20 °C menjadi uap 100 °C? (c es 2.100; L lebur 334.000; c air 4.200; L uap 2.260.000, semua dalam satuan SI)',s:'Q<sub>1</sub> = 0,1 × 2.100 × 20 = 4.200 J<br>Q<sub>2</sub> = 0,1 × 334.000 = 33.400 J<br>Q<sub>3</sub> = 0,1 × 4.200 × 100 = 42.000 J<br>Q<sub>4</sub> = 0,1 × 2.260.000 = 226.000 J<br>Total = <b>305.600 J ≈ 305,6 kJ</b>. Perhatikan bahwa penguapan membutuhkan kalor paling besar.'},
+{t:'Asas Black: campuran air',q:'Sebanyak 300 g air 90 °C dicampur dengan 200 g air 15 °C. Tentukan suhu akhirnya.',s:'Q<sub>lepas</sub> = Q<sub>terima</sub><br>300 (90 − T) = 200 (T − 15)<br>27.000 − 300T = 200T − 3.000 → 30.000 = 500T → T = <b>60 °C</b>.'},
+{t:'Asas Black: kalor jenis logam',q:'Logam 0,5 kg bersuhu 90 °C dimasukkan ke 1 kg air bersuhu 25 °C. Suhu akhir 30 °C. Tentukan kalor jenis logam (c air 4.200 J/kg°C).',s:'Q<sub>terima</sub> = 1 × 4.200 × 5 = 21.000 J.<br>Q<sub>lepas</sub> = 0,5 × c × 60 = 30c.<br>30c = 21.000 → c = <b>700 J/kg°C</b>.'},
+{t:'Daya listrik dan kalor',q:'Pemanas listrik 840 W bekerja 5 menit untuk memanaskan 2 kg air (efisiensi 100%). Berapa kenaikan suhu air?',s:'Q = P t = 840 × 300 = 252.000 J.<br>ΔT = Q/(m c) = 252.000 / (2 × 4.200) = <b>30 °C</b>.'}
+];
+
+const CFG={key:'wzpk_v1',
+ title:'Wujud Zat, Pemuaian, dan Kalor',
+ sets:{
+  A:{name:'Latihan Singkat',min:20,qs:QA,desc:'16 soal pilihan ganda tingkat dasar sampai menengah.'},
+  B:{name:'Latihan TKA (HOTS)',min:40,qs:QB,desc:'12 soal bergaya TKA dengan stimulus teks, infografik, grafik, dan gambar.'}
+ },
+ examples:EX};
+
+/* ===== Engine umum: navigasi, contoh soal, kuis bertimer, pembahasan ===== */
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const fmt=(n,d=2)=>isFinite(n)?Number(n).toLocaleString('id-ID',{maximumFractionDigits:d}):'–';
+const mmss=s=>{s=Math.max(0,s);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')};
+const LET='ABCD';
+
+/* ---------- navigasi ---------- */
+function show(view){
+ $$('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+view));
+ $$('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.view===view));
+ window.scrollTo({top:0,behavior:'smooth'});
+ if(view==='pembahasan')renderReview();
+ if(view==='beranda')renderProgress();
+}
+function showCh(n){
+ $$('.chapter').forEach(c=>c.classList.toggle('on',c.id==='ch'+n));
+ $$('.chtabs button').forEach(b=>b.classList.toggle('on',b.dataset.ch===String(n)));
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+document.addEventListener('click',e=>{
+ const v=e.target.closest('[data-view]');if(v){show(v.dataset.view);return;}
+ const c=e.target.closest('[data-ch]');if(c){showCh(c.dataset.ch);return;}
+});
+
+/* ---------- penyimpanan hasil ---------- */
+let RES={};
+try{RES=JSON.parse(localStorage.getItem(CFG.key)||'{}')||{}}catch(e){RES={}}
+function saveRes(){try{localStorage.setItem(CFG.key,JSON.stringify(RES))}catch(e){}}
+const SETS=CFG.sets, ST={};
+const anyDone=()=>Object.keys(SETS).some(k=>RES[k]);
+
+function updateLock(){
+ const b=$('#navRev');if(b)b.textContent=anyDone()?'Pembahasan ✅':'Pembahasan 🔒';
+}
+
+/* ---------- contoh soal ---------- */
+function renderExamples(){
+ const box=$('#exList');if(!box)return;
+ box.innerHTML=CFG.examples.map((x,i)=>`<div class="card ex"><h4><span class="tag">Contoh ${i+1}</span>${x.t}</h4><p>${x.q}</p><details><summary>Lihat pembahasan</summary><p>${x.s}</p></details></div>`).join('');
+}
+
+/* ---------- progres beranda ---------- */
+function renderProgress(){
+ const box=$('#progress');if(!box)return;
+ let h='<h3 style="margin-top:0">📊 Progres Latihan</h3>';
+ for(const k in SETS){
+  const r=RES[k];
+  h+=`<div style="margin:10px 0"><b>${SETS[k].name}</b> — ${r?`skor terakhir <b>${fmt(r.score,1)}</b> (${r.correct}/${SETS[k].qs.length} benar)`:'belum dikerjakan'}<div class="bar"><i style="width:${r?r.score:0}%"></i></div></div>`;
+ }
+ box.innerHTML=h;
+}
+
+/* ---------- modal ---------- */
+function ask(msg,ok,cancel){
+ const r=$('#modalRoot');
+ r.innerHTML=`<div class="modal"><div><p style="font-weight:600">${msg}</p><div style="display:flex;gap:8px;justify-content:flex-end"><button class="btn sec" id="mNo">Batal</button><button class="btn" id="mYes">Ya, kumpulkan</button></div></div></div>`;
+ $('#mNo').onclick=()=>{r.innerHTML=''};
+ $('#mYes').onclick=()=>{r.innerHTML='';ok()};
+}
+
+/* ---------- kuis ---------- */
+const box=k=>$('#quiz-'+k);
+
+function renderIntro(k){
+ const S=SETS[k],r=RES[k];
+ box(k).innerHTML=`<h2>${S.name}</h2>
+ <div class="card">
+  <p>${S.desc}</p>
+  <ul>
+   <li>Jumlah soal: <b>${S.qs.length}</b></li>
+   <li>Waktu: <b>${S.min} menit</b> (otomatis dikumpulkan saat waktu habis)</li>
+   <li>Pembahasan <b>tidak</b> ditampilkan selama latihan. Pembahasan terbuka di menu <b>Pembahasan</b> setelah jawaban dikumpulkan.</li>
+   <li>Anda dapat berpindah antarsoal, menandai soal ragu-ragu, dan mengubah jawaban sebelum mengumpulkan.</li>
+  </ul>
+  <p><button class="btn" data-act="start" data-k="${k}">▶ Mulai Latihan</button>
+  ${r?` <button class="btn sec" data-view="pembahasan">Buka Pembahasan</button>`:''}</p>
+  ${r?`<div class="note">Hasil terakhir: skor <b>${fmt(r.score,1)}</b>, benar ${r.correct}, salah ${r.wrong}, kosong ${r.blank}. Mulai lagi akan mengganti hasil ini saat Anda mengumpulkan.</div>`:''}
+ </div>`;
+}
+
+function startQuiz(k){
+ const S=SETS[k],n=S.qs.length;
+ ST[k]={ans:Array(n).fill(null),flag:Array(n).fill(false),i:0,end:Date.now()+S.min*60000,t0:Date.now(),timer:null};
+ ST[k].timer=setInterval(()=>tick(k),1000);
+ renderQ(k);
+}
+const left=k=>Math.max(0,Math.round((ST[k].end-Date.now())/1000));
+function tick(k){
+ const s=ST[k];if(!s)return;
+ const l=left(k),el=$('#tm-'+k);
+ if(el){el.textContent=mmss(l);el.parentElement.classList.toggle('warn',l<=60);}
+ if(l<=0)finish(k,true);
+}
+function renderQ(k){
+ const S=SETS[k],s=ST[k],n=S.qs.length,q=S.qs[s.i];
+ const nav=S.qs.map((_,j)=>{let c=[];if(s.ans[j]!==null)c.push('ans');if(s.flag[j])c.push('flag');if(j===s.i)c.push('cur');return `<button class="${c.join(' ')}" data-act="go" data-k="${k}" data-i="${j}">${j+1}</button>`}).join('');
+ const opts=q.o.map((o,j)=>`<div class="opt${s.ans[s.i]===j?' sel':''}" data-act="pick" data-k="${k}" data-j="${j}" role="radio" aria-checked="${s.ans[s.i]===j}"><span class="l">${LET[j]}</span><div>${o}</div></div>`).join('');
+ box(k).innerHTML=`<div class="qbar"><div><b>${S.name}</b> · Soal ${s.i+1} dari ${n}</div><div class="timer${left(k)<=60?' warn':''}">⏱ <b id="tm-${k}">${mmss(left(k))}</b></div><button class="btn red" data-act="submit" data-k="${k}">Kumpulkan</button></div>
+ <div class="qnav">${nav}</div>
+ <div class="card"><div><span class="tag">${q.topic}</span>${q.lvl?`<span class="tag hot">${q.lvl}</span>`:''}</div>
+  ${q.stim?`<div class="stim">${q.stim}</div>`:''}${q.fig?`<div class="figbox">${q.fig}</div>`:''}
+  <div class="qtext">${s.i+1}. ${q.q}</div><div class="opts${q.optFig?' fig':''}">${opts}</div>
+  <div class="ctl"><div><button class="btn sec" data-act="prev" data-k="${k}" ${s.i===0?'disabled':''}>← Sebelumnya</button><button class="btn sec" data-act="flag" data-k="${k}">${s.flag[s.i]?'★ Hapus tanda ragu':'☆ Tandai ragu-ragu'}</button></div><div>${s.i<n-1?`<button class="btn" data-act="next" data-k="${k}">Berikutnya →</button>`:`<button class="btn red" data-act="submit" data-k="${k}">Selesai &amp; Kumpulkan</button>`}</div></div>
+ </div>`;
+}
+function submitAsk(k){
+ const s=ST[k],blank=s.ans.filter(a=>a===null).length,fl=s.flag.filter(Boolean).length;
+ ask(`Kumpulkan jawaban sekarang?${blank?`<br><span style="color:var(--bad)">${blank} soal belum dijawab.</span>`:''}${fl?`<br>${fl} soal masih ditandai ragu-ragu.`:''}<br>Setelah dikumpulkan jawaban tidak dapat diubah.`,()=>finish(k,false));
+}
+function finish(k,auto){
+ const s=ST[k];if(!s)return;
+ clearInterval(s.timer);
+ const S=SETS[k];let c=0,w=0,b=0;
+ S.qs.forEach((q,i)=>{if(s.ans[i]===null)b++;else if(s.ans[i]===q.a)c++;else w++;});
+ const used=Math.min(S.min*60,Math.round((Date.now()-s.t0)/1000));
+ RES[k]={ans:s.ans,flag:s.flag,correct:c,wrong:w,blank:b,score:c/S.qs.length*100,used,auto:!!auto,ts:Date.now()};
+ saveRes();delete ST[k];updateLock();renderResult(k);
+ $('#modalRoot').innerHTML='';
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function renderResult(k){
+ const S=SETS[k],r=RES[k];
+ const topics={};S.qs.forEach((q,i)=>{const t=topics[q.topic]||(topics[q.topic]={n:0,c:0});t.n++;if(r.ans[i]===q.a)t.c++;});
+ const pred=r.score>=85?'Sangat baik 🎉':r.score>=70?'Baik 👍':r.score>=50?'Cukup — perlu ditingkatkan':'Perlu belajar lagi 💪';
+ box(k).innerHTML=`<h2>Hasil ${S.name}</h2>
+ <div class="card">${r.auto?'<div class="warnbox">Waktu habis — jawaban dikumpulkan otomatis.</div>':''}
+  <div class="score"><div class="ring" style="--p:${r.score}%"><b>${fmt(r.score,0)}</b><span>skor</span></div>
+  <div class="stat"><div><b style="color:var(--ok)">${r.correct}</b>Benar</div><div><b style="color:var(--bad)">${r.wrong}</b>Salah</div><div><b>${r.blank}</b>Kosong</div><div><b>${mmss(r.used)}</b>Waktu</div></div></div>
+  <p style="margin-top:12px"><b>${pred}</b></p>
+  <h4>Ketuntasan per topik</h4>
+  ${Object.keys(topics).map(t=>`<div style="margin:6px 0">${t}: ${topics[t].c}/${topics[t].n}<div class="bar"><i style="width:${topics[t].c/topics[t].n*100}%"></i></div></div>`).join('')}
+  <p style="margin-top:14px"><button class="btn" data-view="pembahasan">📖 Buka Pembahasan</button> <button class="btn sec" data-act="again" data-k="${k}">↻ Ulangi Latihan</button></p>
+ </div>`;
+}
+document.addEventListener('click',e=>{
+ const a=e.target.closest('[data-act]');if(!a)return;
+ const k=a.dataset.k,act=a.dataset.act;
+ if(act==='start')startQuiz(k);
+ else if(act==='again')renderIntro(k);
+ else if(act==='review-set'){rv.set=k;renderReview();}
+ else if(act==='review-filter'){rv.f=a.dataset.f;renderReview();}
+ else if(ST[k]){
+  const s=ST[k];
+  if(act==='pick'){s.ans[s.i]=+a.dataset.j;renderQ(k);}
+  else if(act==='go'){s.i=+a.dataset.i;renderQ(k);}
+  else if(act==='next'){s.i++;renderQ(k);window.scrollTo({top:0});}
+  else if(act==='prev'){s.i--;renderQ(k);window.scrollTo({top:0});}
+  else if(act==='flag'){s.flag[s.i]=!s.flag[s.i];renderQ(k);}
+  else if(act==='submit')submitAsk(k);
+ }
+});
+document.addEventListener('keydown',e=>{
+ const k=Object.keys(ST)[0];if(!k)return;
+ if(e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
+ const s=ST[k],n=SETS[k].qs.length;
+ if(e.key==='ArrowRight'&&s.i<n-1){s.i++;renderQ(k);}
+ else if(e.key==='ArrowLeft'&&s.i>0){s.i--;renderQ(k);}
+ else{const m='abcd'.indexOf(e.key.toLowerCase());const d='1234'.indexOf(e.key);const j=m>=0?m:d;if(j>=0&&j<SETS[k].qs[s.i].o.length){s.ans[s.i]=j;renderQ(k);}}
+});
+
+/* ---------- pembahasan ---------- */
+const rv={set:null,f:'all'};
+function renderReview(){
+ const root=$('#reviewBox');
+ if(!anyDone()){
+  root.innerHTML=`<h2>Pembahasan</h2><div class="card"><div style="font-size:2.4rem">🔒</div><h3>Pembahasan masih terkunci</h3><p>Kerjakan dan kumpulkan salah satu latihan terlebih dahulu. Pembahasan akan terbuka di sini dan memuat jawaban Anda, kunci jawaban, serta langkah penyelesaian.</p><p><button class="btn" data-view="latihanA">Latihan Singkat</button> <button class="btn sec" data-view="latihanB">Latihan TKA</button></p></div>`;
+  return;
+ }
+ const keys=Object.keys(SETS);
+ if(!rv.set||!RES[rv.set])rv.set=keys.find(k=>RES[k]);
+ const S=SETS[rv.set],r=RES[rv.set];
+ const tabs=keys.map(k=>`<button class="${k===rv.set?'on':''}" data-act="review-set" data-k="${k}" ${RES[k]?'':'disabled title="Belum dikerjakan"'}>${SETS[k].name}${RES[k]?'':' 🔒'}</button>`).join('');
+ const fl=[['all','Semua'],['no','Salah'],['bl','Kosong'],['ok','Benar']].map(f=>`<button class="${rv.f===f[0]?'on':''}" data-act="review-filter" data-f="${f[0]}">${f[1]}</button>`).join('');
+ let cards='';
+ S.qs.forEach((q,i)=>{
+  const u=r.ans[i],st=u===null?'bl':u===q.a?'ok':'no';
+  if(rv.f!=='all'&&rv.f!==st)return;
+  const label=st==='ok'?'✅ Benar':st==='no'?'❌ Salah':'⚪ Kosong';
+  const opts=q.o.map((o,j)=>{let c='opt neutral',bd='';if(j===q.a){c='opt key';bd='<span class="bd" style="color:var(--ok)">✔ Kunci jawaban</span>'}if(j===u&&j!==q.a){c='opt wrong';bd='<span class="bd" style="color:var(--bad)">✖ Jawaban Anda</span>'}else if(j===u&&j===q.a){bd='<span class="bd" style="color:var(--ok)">✔ Jawaban Anda = kunci</span>'}
+   return `<div class="${c}"><span class="l">${LET[j]}</span><div>${o}${bd}</div></div>`}).join('');
+  cards+=`<div class="card rv ${st}"><div><span class="tag">Soal ${i+1}</span><span class="tag">${q.topic}</span>${q.lvl?`<span class="tag hot">${q.lvl}</span>`:''} <b>${label}</b></div>
+  ${q.stim?`<div class="stim">${q.stim}</div>`:''}${q.fig?`<div class="figbox">${q.fig}</div>`:''}
+  <div class="qtext">${q.q}</div><div class="opts${q.optFig?' fig':''}">${opts}</div>
+  <div class="exp"><b>Pembahasan:</b><br>${q.e}</div></div>`;
+ });
+ root.innerHTML=`<h2>Pembahasan</h2><div class="chtabs">${tabs}</div>
+ <div class="card">Skor: <b>${fmt(r.score,1)}</b> · Benar ${r.correct} · Salah ${r.wrong} · Kosong ${r.blank}<div class="chips">${fl}</div></div>${cards||'<div class="card">Tidak ada soal pada filter ini.</div>'}`;
+}
+
+/* ---------- init ---------- */
+renderExamples();renderProgress();updateLock();
+for(const k in SETS)renderIntro(k);
+
+/* ===== Simulasi: Wujud Zat, Pemuaian, Kalor ===== */
+(function(){ // Partikel
+ const cv=$('#pCanvas');if(!cv)return;
+ const ctx=cv.getContext('2d'),W=cv.width,H=cv.height,cols=8,rows=6,sp=30,R=8;
+ const ox=W/2-(cols-1)*sp/2,oy=H-36-(rows-1)*sp,P=[];
+ for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const hx=ox+c*sp,hy=oy+r*sp;P.push({x:hx,y:hy,hx,hy,vx:1,vy:0});}
+ const LB={l:W/2-190,r:W/2+190,t:H-20-125,b:H-20},GB={l:20,r:W-20,t:20,b:H-20};
+ const sl=$('#pTemp');let T=+sl.value;
+ function info(){
+  $('#pT').textContent=T;
+  let h;
+  if(T<0)h='<b>Padat (es).</b> Partikel tersusun teratur dan sangat rapat, hanya bergetar di tempatnya; gaya tarik antarpartikel sangat kuat. Bentuk dan volume tetap.';
+  else if(T===0)h='<b>Titik lebur/beku 0 °C.</b> Es dan air dapat hidup berdampingan. Selama perubahan wujud suhu tetap; kalor dipakai untuk melonggarkan susunan partikel (melebur) atau dilepas (membeku).';
+  else if(T<100)h='<b>Cair (air).</b> Partikel masih berdekatan tetapi dapat berpindah dan bergulir; susunan kurang teratur. Bentuk mengikuti wadah, volume tetap.';
+  else if(T===100)h='<b>Titik didih 100 °C (1 atm).</b> Air dan uap air berada bersama. Selama mendidih suhu tetap karena kalor dipakai untuk menguapkan air.';
+  else h='<b>Gas (uap air).</b> Partikel sangat renggang, bergerak bebas dan cepat ke segala arah, gaya tarik sangat lemah. Mengisi seluruh wadah.';
+  $('#pInfo').innerHTML=h;
+ }
+ sl.addEventListener('input',()=>{T=+sl.value;info();});info();
+ function frame(){
+  const mode=T<0?0:T<100?1:2;
+  const spd=mode===1?1.4+T*0.03:mode===2?3.2+(T-100)*0.05:0,amp=0.4+(T+40)*0.04;
+  for(const p of P){
+   if(mode===0){p.x+=(p.hx-p.x)*0.1+(Math.random()-.5)*amp*2;p.y+=(p.hy-p.y)*0.1+(Math.random()-.5)*amp*2;}
+   else{
+    p.vx+=(Math.random()-.5)*0.6;p.vy+=(Math.random()-.5)*0.6+(mode===1?0.08:0);
+    const s=Math.hypot(p.vx,p.vy)||1;p.vx=p.vx/s*spd;p.vy=p.vy/s*spd;p.x+=p.vx;p.y+=p.vy;
+    const b=mode===1?LB:GB;
+    if(p.x<b.l+R){p.x=b.l+R;p.vx=Math.abs(p.vx);}
+    if(p.x>b.r-R){p.x=b.r-R;p.vx=-Math.abs(p.vx);}
+    if(p.y>b.b-R){p.y=b.b-R;p.vy=-Math.abs(p.vy);}
+    if(p.y<b.t+R){if(mode===1){p.y+=2.5;p.vy=Math.abs(p.vy);}else{p.y=b.t+R;p.vy=Math.abs(p.vy);}}
+   }
+  }
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle='#adb5bd';ctx.lineWidth=2;ctx.strokeRect(10,10,W-20,H-20);
+  if(mode===1){ctx.fillStyle='rgba(80,150,255,.12)';ctx.fillRect(LB.l,LB.t,LB.r-LB.l,LB.b-LB.t);}
+  const hue=230-((T+40)/180)*230;
+  for(const p of P){ctx.beginPath();ctx.arc(p.x,p.y,R,0,6.283);ctx.fillStyle=`hsl(${hue} 80% 55%)`;ctx.fill();ctx.strokeStyle='rgba(0,0,0,.25)';ctx.lineWidth=1;ctx.stroke();}
+  ctx.fillStyle='#1e2433';ctx.font='bold 16px system-ui';ctx.fillText((mode===0?'Padat':mode===1?'Cair':'Gas')+' · '+T+' °C',22,32);
+  requestAnimationFrame(frame);
+ }
+ frame();
+})();
+
+(function(){ // Pemuaian
+ const MAT={'Aluminium':2.4e-5,'Kuningan':1.9e-5,'Tembaga':1.7e-5,'Besi / baja':1.2e-5,'Beton':1.0e-5,'Kaca':0.9e-5};
+ const sel=$('#eMat');if(!sel)return;
+ sel.innerHTML=Object.keys(MAT).map(k=>`<option>${k}</option>`).join('');
+ const L=$('#eL'),D=$('#eT');
+ function upd(){
+  const a=MAT[sel.value],L0=+L.value,dT=+D.value;
+  $('#eLv').textContent=L0;$('#eTv').textContent=dT;
+  const dL=L0*a*dT,A0=L0*L0,dA=A0*2*a*dT,V0=L0*L0*L0,dV=V0*3*a*dT;
+  $('#rod').style.width='300px';$('#rodExt').style.width=Math.min(150,(dL/L0)*300*100)+'px';
+  $('#eOut').innerHTML=`α = ${(a*1e5).toLocaleString('id-ID')} × 10<sup>-5</sup> /°C<br>
+  <b>Panjang:</b> ΔL = ${L0} × ${(a*1e5).toLocaleString('id-ID')}×10<sup>-5</sup> × ${dT} = <b>${fmt(dL*1000,3)} mm</b> (L<sub>t</sub> = ${fmt(L0+dL,5)} m)<br>
+  <b>Luas</b> (pelat sisi ${L0} m): ΔA = A₀ · 2α · ΔT = <b>${fmt(dA*10000,2)} cm²</b><br>
+  <b>Volume</b> (kubus sisi ${L0} m): ΔV = V₀ · 3α · ΔT = <b>${fmt(dV*1e6,1)} cm³</b>`;
+ }
+ [sel,L,D].forEach(e=>e.addEventListener('input',upd));upd();
+ $('#anoFig').innerHTML=figAnomali();
+})();
+
+(function(){ // Kurva pemanasan
+ const M=$('#hM');if(!M)return;
+ const T0=$('#hT0'),T1=$('#hT1');
+ function stages(m,a,b){
+  const ce=2100,ca=4200,cu=2010,Lf=334000,Lv=2260000;let Q=0,T=a;const seg=[];
+  const add=(n,q,x,y,col)=>{seg.push({n,q,Q0:Q,Q1:Q+q,x,y,col});Q+=q;};
+  if(T<0){add('Es naik suhu',m*ce*(0-T),T,0,'#4dabf7');T=0;}
+  if(b>0){add('Es melebur (0 °C)',m*Lf,0,0,'#f59f00');
+   const top=Math.min(b,100);add('Air naik suhu',m*ca*top,0,top,'#1c7ed6');T=top;
+   if(b>100){add('Air menguap (100 °C)',m*Lv,100,100,'#e8590c');add('Uap naik suhu',m*cu*(b-100),100,b,'#e03131');}}
+  return {seg,total:Q};
+ }
+ function upd(){
+  const m=Math.max(0.001,(+M.value||1)/1000),a=+T0.value,b=+T1.value;
+  $('#hT0v').textContent=a;$('#hT1v').textContent=b;
+  const {seg,total}=stages(m,a,b);
+  const W=640,H=300,ml=60,mr=20,mt=20,mb=50,tmin=Math.min(a,0)-5,tmax=Math.max(b,0)+10;
+  const X=q=>ml+(total?q/total:0)*(W-ml-mr),Y=t=>mt+(tmax-t)/(tmax-tmin)*(H-mt-mb);
+  let s=`<svg viewBox="0 0 ${W} ${H}" class="figsvg" style="max-width:640px" font-family="system-ui,Arial"><rect width="${W}" height="${H}" fill="#fff"/>
+  <line x1="${ml}" y1="${mt}" x2="${ml}" y2="${H-mb}" stroke="#333" stroke-width="2"/><line x1="${ml}" y1="${H-mb}" x2="${W-mr}" y2="${H-mb}" stroke="#333" stroke-width="2"/>
+  <text x="6" y="14" font-size="11">Suhu (°C)</text><text x="${W-100}" y="${H-8}" font-size="11">Kalor Q (kJ)</text>`;
+  const yt=[...new Set([a,0,100,b].filter(t=>t>=tmin&&t<=tmax))];
+  yt.forEach(t=>{s+=`<line x1="${ml}" y1="${Y(t)}" x2="${W-mr}" y2="${Y(t)}" stroke="#e5e8f0"/><text x="${ml-6}" y="${Y(t)+4}" font-size="11" text-anchor="end">${t}</text>`;});
+  seg.forEach(g=>{s+=`<line x1="${X(g.Q0)}" y1="${Y(g.x)}" x2="${X(g.Q1)}" y2="${Y(g.y)}" stroke="${g.col}" stroke-width="4" stroke-linecap="round"/>`;
+   s+=`<line x1="${X(g.Q1)}" y1="${H-mb}" x2="${X(g.Q1)}" y2="${H-mb+5}" stroke="#333"/><text x="${X(g.Q1)}" y="${H-mb+18}" font-size="10" text-anchor="middle">${fmt(g.Q1/1000,1)}</text>`;});
+  s+=`<text x="${ml}" y="${H-mb+18}" font-size="10" text-anchor="middle">0</text></svg>`;
+  $('#hFig').innerHTML=s;
+  let t=`<table><tr><th>Tahap</th><th>Rumus</th><th>Q (J)</th><th>Kumulatif (J)</th></tr>`;
+  seg.forEach(g=>{t+=`<tr><td>${g.n}</td><td>${g.n.includes('(')?'m · L':'m · c · ΔT'}</td><td>${fmt(g.q,0)}</td><td>${fmt(g.Q1,0)}</td></tr>`;});
+  t+=`<tr><th colspan="2">Total</th><th>${fmt(total,0)} J</th><th>${fmt(total/1000,2)} kJ</th></tr></table><p style="font-size:.82rem;color:var(--mut)">Memakai c es 2.100; c air 4.200; c uap 2.010 J/kg°C; L lebur 334.000 J/kg; L uap 2.260.000 J/kg.</p>`;
+  $('#hTab').innerHTML=t;
+ }
+ [M,T0,T1].forEach(e=>e.addEventListener('input',upd));upd();
+})();
+
+(function(){ // Asas Black
+ const C={'Air':4200,'Alkohol':2400,'Aluminium':900,'Kaca':840,'Besi':450,'Tembaga':390};
+ const s1=$('#bc1');if(!s1)return;const s2=$('#bc2');
+ const opt=Object.keys(C).map(k=>`<option value="${C[k]}">${k} (c=${C[k]})</option>`).join('');
+ s1.innerHTML=opt;s2.innerHTML=opt;
+ const els=['#bc1','#bm1','#bT1','#bc2','#bm2','#bT2'].map(x=>$(x));
+ function upd(){
+  const c1=+s1.value,c2=+s2.value,m1=(+$('#bm1').value||0)/1000,m2=(+$('#bm2').value||0)/1000,T1=+$('#bT1').value,T2=+$('#bT2').value;
+  const o=$('#bOut');
+  if(!(m1*c1+m2*c2>0)){o.textContent='Isi massa dengan nilai positif.';return;}
+  if(T1<=T2){o.innerHTML='<span style="color:var(--bad)">Suhu benda panas harus lebih tinggi daripada benda dingin.</span>';return;}
+  const Tc=(m1*c1*T1+m2*c2*T2)/(m1*c1+m2*c2),Q=m1*c1*(T1-Tc);
+  o.innerHTML=`Suhu akhir T<sub>c</sub> = (m₁c₁T₁ + m₂c₂T₂)/(m₁c₁ + m₂c₂) = <b>${fmt(Tc,2)} °C</b><br>Kalor berpindah Q = m₁c₁(T₁ − T<sub>c</sub>) = <b>${fmt(Q,0)} J</b> (dilepas benda panas = diterima benda dingin)`;
+ }
+ els.forEach(e=>e.addEventListener('input',upd));upd();
+})();
+
+(function(){ // Massa jenis
+ const m=$('#dm');if(!m)return;const v=$('#dv');
+ function upd(){
+  const M=+m.value,V=+v.value;
+  if(!(M>0&&V>0)){$('#dOut').textContent='Isi massa dan volume dengan nilai positif.';return;}
+  const r=M/V;
+  $('#dOut').innerHTML=`ρ = m/V = ${fmt(M)} / ${fmt(V)} = <b>${fmt(r,3)} g/cm³</b> = <b>${fmt(r*1000,1)} kg/m³</b><br>Dibandingkan air (1 g/cm³): benda akan <b>${r<1?'mengapung':r>1?'tenggelam':'melayang'}</b> di dalam air.`;
+ }
+ m.addEventListener('input',upd);v.addEventListener('input',upd);upd();
+})();
+
+(function(){ // Suhu
+ const v=$('#tv');if(!v)return;const s=$('#ts');
+ function upd(){
+  const x=+v.value;let C;
+  if(s.value==='C')C=x;else if(s.value==='F')C=(x-32)*5/9;else if(s.value==='K')C=x-273;else C=x*5/4;
+  $('#tOut').innerHTML=`<b>${fmt(C,2)} °C</b> &nbsp;=&nbsp; <b>${fmt(C*9/5+32,2)} °F</b> &nbsp;=&nbsp; <b>${fmt(C+273,2)} K</b> &nbsp;=&nbsp; <b>${fmt(C*4/5,2)} °R</b>`;
+ }
+ v.addEventListener('input',upd);s.addEventListener('input',upd);upd();
+})();
+
+</script>
+</body>
+</html>
